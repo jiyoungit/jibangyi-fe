@@ -1,6 +1,14 @@
 <script setup>
 import { ref } from 'vue';
-const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
+import { useRoute, useRouter } from 'vue-router';
+const popularSearchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
+
+const router = useRouter()
+const searchWord = ref("");
+const searchDeal = () => {
+  router.push({ name: 'deal', searchWord: searchWord });
+
+}
 </script>
 
 <template>
@@ -8,36 +16,37 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   <div class="searchWrapper">
     <div class="searchInner">
       <h1 class="searchText">홍박사님을 아세요?</h1>
-      <v-form class="mx-auto mt-8" color="grey-lighten-3">
-        <v-text-field variant="solo" label="지역명을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details @click:append-inner="onClick"></v-text-field>
+      <v-form class="mx-auto mt-8" color="grey-lighten-3" @submit.prevent="searchDeal">
+        <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
+          v-model="searchWord"></v-text-field>
       </v-form>
     </div>
   </div>
   <div class="guideCard__Wrapper">
     <div class="guideCard__CardWrapper">
       <div>
-        <a href="#guide1"
-          ><div class="guideCard__Card">
+        <a href="#guide1">
+          <div class="guideCard__Card">
             <div class="guideCard__CardTitle">완전 편리</div>
             <div class="guideCard__CardContext">최근 거래 내역을 한 눈에</div>
           </div>
         </a>
       </div>
       <div>
-        <a href="#guide2"
-          ><div class="guideCard__Card">
+        <a href="#guide2">
+          <div class="guideCard__Card">
             <div class="guideCard__CardTitle">짱짱 간편</div>
             <div class="guideCard__CardContext">인기 거래 지역 알아보기</div>
           </div>
         </a>
       </div>
       <div>
-        <a href="#guide3"
-          ><div class="guideCard__Card">
+        <a href="#guide3">
+          <div class="guideCard__Card">
             <div class="guideCard__CardTitle">박박 유용</div>
             <div class="guideCard__CardContext">관심있는 인기검색어</div>
-          </div></a
-        >
+          </div>
+        </a>
       </div>
     </div>
   </div>
@@ -75,7 +84,9 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
     <div class="guideFeature__Wrapper card">
       <div class="guideFeature__Card searchWord">
         <div class="guideFeature__CardTitle">인기검색어</div>
-        <div class="guideFeature__CardContext" v-for="(word, index) in searchWord" :key="word">{{ index + 1 }}. {{ word }}</div>
+        <div class="guideFeature__CardContext" v-for="(word, index) in popularSearchWord" :key="word">{{ index + 1 }}. {{
+          word }}
+        </div>
       </div>
     </div>
   </section>
@@ -90,13 +101,16 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   margin-bottom: 80px;
   background: rgb(209, 244, 250);
   background: linear-gradient(180deg, #005792 0%, #d1f4fa 100%);
+  z-index: 0;
 }
+
 .searchInner {
   width: 1200px;
   height: 100%;
   margin: 0 auto;
   padding: 0 10px;
 }
+
 .searchText {
   margin-top: 165px;
   line-break: 60px;
@@ -105,6 +119,7 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   font-weight: 500;
   color: #fff;
 }
+
 .guideCard__CardWrapper {
   width: 1020px;
   margin: 0 auto 9.3rem;
@@ -112,6 +127,7 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   display: flex;
   justify-content: space-between;
 }
+
 .guideCard__Card {
   display: flex;
   flex-direction: column;
@@ -123,12 +139,14 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   background-color: rgb(244, 245, 245);
   border-radius: 1.4rem;
 }
+
 .guideCard__CardTitle {
   color: rgb(51, 51, 51);
   font-family: 'Noto Sans KR';
   font-size: 2.2rem;
   font-weight: 600;
 }
+
 .guideCard__CardContext {
   color: rgb(102, 102, 102);
   font-family: 'Noto Sans KR';
@@ -136,6 +154,7 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   line-height: 2.4rem;
   margin-top: 2.5rem;
 }
+
 .guideFeature {
   display: flex;
   flex-direction: column;
@@ -144,18 +163,22 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   padding-bottom: 12rem;
   background-color: rgb(244, 245, 245);
 }
+
 .guideFeature__Header {
   text-align: center;
   padding-top: 6rem;
 }
+
 .PrimaryBg {
   width: 100%;
   background-color: #1e7ef9;
 }
+
 .secondaryBg {
   width: 100%;
   background-color: #d1f4fa;
 }
+
 .guideFeature__Title {
   color: rgb(51, 51, 51);
   font-family: 'Noto Sans KR';
@@ -163,26 +186,31 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   font-size: 2.7rem;
   margin-bottom: 5px;
 }
+
 .arrow {
   color: rgb(102, 102, 102);
   font-size: 2.5rem;
   margin-top: 20px;
   margin-bottom: 4rem;
 }
+
 .guideFeature__Wrapper {
   display: flex;
   justify-content: space-between;
   margin-top: 5.6rem;
   width: 60rem;
 }
+
 .card {
   background: rgb(255, 255, 255);
   border-radius: 1.6rem;
 }
+
 .guideFeature__Card {
   padding: 4.5rem 0 4.35rem 4.5rem;
   font-family: 'Noto Sans KR';
 }
+
 .guideFeature__CardTitle {
   color: rgb(17, 17, 17);
   font-size: 2.5rem;
@@ -190,6 +218,7 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   line-height: 3.8rem;
   margin-bottom: 2.4rem;
 }
+
 .guideFeature__CardContext {
   color: rgb(102, 102, 102);
   font-size: 1.5rem;
@@ -198,6 +227,7 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   margin-bottom: 2.4rem;
   /* letter-spacing: -0.72px; */
 }
+
 .guideFeature__Img {
   width: 20rem;
   height: 20rem;
@@ -205,30 +235,37 @@ const searchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
   border-radius: 1.6rem;
   object-fit: cover;
 }
+
 .gray {
   color: rgb(130, 130, 130);
 }
+
 .white {
   color: #fff;
 }
+
 .searchWord {
   padding-left: 0;
   flex-direction: column;
   text-align: center;
   margin: 0 auto;
 }
-.searchWord > div {
+
+.searchWord>div {
   margin-bottom: 1.5rem;
 }
+
 .infoSection {
   width: 100%;
   padding: 40px 0 27px;
 }
+
 .infoSection__Wrapper {
   display: flex;
   width: 1020px;
   margin: 0 auto;
 }
+
 .infoSection__Card {
   width: 300px;
 }

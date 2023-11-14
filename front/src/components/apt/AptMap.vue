@@ -5,7 +5,7 @@ var map;
 const positions = ref([]);
 const markers = ref([]);
 
-const props = defineProps({ stations: Array, selectStation: Object });
+// const props = defineProps({ stations: Array, selectStation: Object });
 
 // watch(
 //   () => props.selectStation.value,
@@ -106,7 +106,7 @@ const deleteMarkers = () => {
 
 <style>
 #map {
-  width: 100%;
-  height: 700px;
+  width: 100vw;
+  height: 100vh;
 }
 </style>
