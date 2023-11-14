@@ -1,9 +1,11 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
+import {listAptInfosByCoold} from "../../api/apt";
 
 var map;
 const positions = ref([]);
 const markers = ref([]);
+const aptInfoMarkers = ref([]);
 
 // const props = defineProps({ stations: Array, selectStation: Object });
 
@@ -58,6 +60,7 @@ const initMap = () => {
   map = new kakao.maps.Map(container, options);
 
   // loadMarkers();
+  traceCenterCoolds();
 };
 
 const loadMarkers = () => {
@@ -98,6 +101,56 @@ const deleteMarkers = () => {
     markers.value.forEach((marker) => marker.setMap(null));
   }
 };
+
+function traceCenterCoolds() {
+  // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+  kakao.maps.event.addListener(map, 'dragend', function() {        
+  
+  // 지도 중심좌표를 얻어옵니다 
+  const latlng = map.getCenter(); 
+  
+  // let message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
+  // message += '경도는 ' + latlng.getLng() + ' 입니다';
+  // console.log(message);
+
+
+
+  listAptInfosByCoold(
+    {lat: latlng.getLat(), lng: latlng.getLng(), range: 5, limit: 200},
+    ({data}) => {
+      console.log(aptInfoMarkers.value)
+      aptInfoMarkers.value.forEach(marker => marker.setMap(null));
+      aptInfoMarkers.value = [];
+      // if (markers.length > 0) {
+      //   console.log("길이: ",markers.length)
+      //   markers.forEach(marker => {marker.setMap(null);})
+      //   markers.length = 0;
+      // }
+
+      data.forEach(aptinfo => {
+        // 마커를 생성합니다
+        const marker = new kakao.maps.Marker({
+          map: map, // 마커를 표시할 지도
+          position: new kakao.maps.LatLng(aptinfo.lat, aptinfo.lng), // 마커를 표시할 위치
+          title : aptinfo.apartmentName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          // image : markerImage // 마커 이미지 
+        });
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+  
+        // 생성된 마커를 배열에 추가합니다
+        aptInfoMarkers.value.push(marker);
+
+      })
+      // console.log(data)
+    },
+    (error) => {
+      console.log(error);
+    }
+  )
+  
+  });
+}
 </script>
 
 <template>
