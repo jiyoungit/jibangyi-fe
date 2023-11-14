@@ -46,5 +46,20 @@
 		ORDER BY dealDay desc
 		LIMIT 0, 20
 	</select>
+	
+	<select id="searchAptInfoByCoold" resultType="HouseInfoDto">
+		SELECT hi.* 
+		FROM houseinfo hi JOIN (
+			SELECT AptCode 
+		    FROM houseinfopoint hip
+		    WHERE ST_Contains(
+		    ST_Buffer(
+				ST_PointFromText(
+					CONCAT('POINT(', CAST(#{lng} AS DECIMAL(20, 12)), ' ', CAST(#{lat} AS DECIMAL(20, 12)), ')'), 5179
+				), #{range} / 111.1
+			), hip.point)
+		) r using(AptCode)
+		LIMIT #{offset}, #{limit}
+	</select>
 
 </mapper>

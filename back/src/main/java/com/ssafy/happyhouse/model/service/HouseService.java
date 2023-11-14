@@ -21,4 +21,5 @@ public interface HouseService {
 
 	List<HouseDealDto> searchAptDeals(HouseDealParameterDto param);
 
+	List<HouseInfoDto> searchAptInfoByCoold(String lat, String lng, int range, int offset, int limit) throws Exception;
 }

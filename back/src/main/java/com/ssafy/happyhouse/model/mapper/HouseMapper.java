@@ -27,4 +27,7 @@ public interface HouseMapper {
 
 	List<HouseDealDto> searchAptDeals(HouseDealParameterDto param);
 
+	List<HouseInfoDto> searchAptInfoByCoold(@Param("lat")String lat, @Param("lng")String lng, 
+			@Param("range")int range, @Param("offset")int offset, @Param("limit")int limit);
+
 }

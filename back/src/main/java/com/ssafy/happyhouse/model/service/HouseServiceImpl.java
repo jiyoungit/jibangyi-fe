@@ -44,4 +44,9 @@ public class HouseServiceImpl implements HouseService {
 		return mapper.searchAptDeals(param);
 	}
 
+	@Override
+	public List<HouseInfoDto> searchAptInfoByCoold(String lat, String lng, int range, int offset, int limit) throws Exception {
+		return mapper.searchAptInfoByCoold(lat, lng, range, offset, limit);
+	}
+
 }
