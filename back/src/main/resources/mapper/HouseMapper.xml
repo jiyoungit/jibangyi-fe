@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapper">
+
+	<select id="dongCodeList" resultType="DongCodeDto">
+		SELECT * FROM dongcode
+		WHERE dongName = #{dongName}
+	</select>
+
+	<select id="searchByDongCode" resultType="HouseInfoDto">
+		SELECT * FROM houseinfo
+		WHERE dongCode = #{dongCode} LIMIT #{offset}, #{limit}
+	</select>
+
+	<select id="searchByAptNo" resultType="HouseDealDto">
+		SELECT * FROM housedeal
+		WHERE aptCode = #{aptCode} and dealYear = #{year} and dealMonth = #{month} 
+		ORDER BY dealDay
+		LIMIT #{offset}, #{limit}
+	</select>
+
+	<select id="searchBySigunguCode"
+		resultType="HouseDealAndInfoDto" parameterType="string">
+		SELECT hd.no,
+		hd.dealAmount, hd.dealYear, hd.dealMonth, hd.dealDay, hd.area,
+		hd.floor, hd.cancelDealType,
+		hi.*
+		FROM housedeal hd, houseinfo hi
+		WHERE hd.aptCode = hi.aptCode
+		and hi.sigunguCode = #{sCode}
+		and hd.dealYear = #{dYear}
+		and hd.dealMonth = #{dMonth}
+		ORDER BY dealDay desc
+		LIMIT 0, 20
+	</select>
+	
+	<select id="searchAptDeals" parameterType="HouseDealParameterDto" resultType="HouseDealDto">
+		SELECT hd.*
+		FROM housedeal hd, houseinfo hi
+		WHERE hd.aptCode = hi.aptCode
+		and hi.sigunguCode = #{sCode}
+		and hd.dealYear = #{dYear}
+		and hd.dealMonth = #{dMonth}
+		ORDER BY dealDay desc
+		LIMIT 0, 20
+	</select>
+
+</mapper>
