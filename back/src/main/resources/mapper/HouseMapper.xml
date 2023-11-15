@@ -6,7 +6,7 @@
 
 	<select id="dongCodeList" resultType="DongCodeDto">
 		SELECT * FROM dongcode
-		WHERE dongName = #{dongName}
+		WHERE dongName LIKE CONCAT('%', #{dongName}, '%') 
 	</select>
 
 	<select id="searchByDongCode" resultType="HouseInfoDto">
