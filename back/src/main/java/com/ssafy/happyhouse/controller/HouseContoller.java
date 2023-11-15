@@ -33,7 +33,7 @@ public class HouseContoller {
 
 	@ApiOperation(value = "동 코드 목록", notes = "동 이름으로 검색한 결과 목록을 반환합니다.")
 	@GetMapping("/dongcodes/{dongName}")
-	public List<DongCodeDto> dongCodeList(@RequestParam String dongName) throws Exception {
+	public List<DongCodeDto> dongCodeList(@PathVariable String dongName) throws Exception {
 		return hService.dongCodeList(dongName);
 	}
 
