@@ -17,6 +17,7 @@ public class DongCodeDto {
 	private String sidoName;
 	private String gugunName;
 	private String dongName;
-
+	private String cLat;
+	private String cLng;
 
 }

@@ -5,8 +5,9 @@
 <mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapper">
 
 	<select id="dongCodeList" resultType="DongCodeDto">
-		SELECT * FROM dongcode
-		WHERE dongName LIKE CONCAT('%', #{dongName}, '%') 
+		SELECT bjd_cd dongCode, sd_nm sidoName, sgg_nm gugunName, CONCAT(emd_nm,' ',li_nm) dongName, center_long cLng, center_lati cLat 
+		FROM whereismyhome.bjd_info
+		WHERE emd_nm LIKE CONCAT('%', #{dongName}, '%') or li_nm LIKE CONCAT('%', #{dongName}, '%');
 	</select>
 
 	<select id="searchByDongCode" resultType="HouseInfoDto">
