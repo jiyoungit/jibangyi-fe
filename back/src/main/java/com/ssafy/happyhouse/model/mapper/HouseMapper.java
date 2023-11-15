@@ -19,8 +19,8 @@ public interface HouseMapper {
 	List<HouseInfoDto> searchByDongCode(@Param("dongCode") String dongCode, @Param("offset") int offset,
 			@Param("limit") int limit);
 
-	List<HouseDealDto> searchByAptNo(@Param("aptCode") String aptCode, @Param("year") int year,
-			@Param("month") int month, @Param("offset") int offset, @Param("limit") int limit);
+	List<HouseDealDto> searchByAptNo(@Param("aptCode") String aptCode, 
+			@Param("offset") int offset, @Param("limit") int limit);
 
 	List<HouseDealAndInfoDto> searchBySigunguCode(@Param("sCode") int sigunguCode, @Param("dYear") int dealYear,
 			@Param("dMonth") int dealMonth);

@@ -30,8 +30,8 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<HouseDealDto> searchByAptNo(String aptCode, int year, int month, int offset, int limit) throws Exception{
-		return mapper.searchByAptNo(aptCode, year, month, offset, limit);
+	public List<HouseDealDto> searchByAptNo(String aptCode, int offset, int limit) throws Exception{
+		return mapper.searchByAptNo(aptCode, offset, limit);
 	}
 
 	@Override

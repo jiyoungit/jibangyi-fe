@@ -15,7 +15,7 @@ public interface HouseService {
 
 	List<HouseInfoDto> searchByDongCode(String dongCode, int offset, int limit) throws Exception;
 
-	List<HouseDealDto> searchByAptNo(String aptCode, int year, int month, int offset, int limit) throws Exception;
+	List<HouseDealDto> searchByAptNo(String aptCode, int offset, int limit) throws Exception;
 	
 	List<HouseDealAndInfoDto> searchBySigunguCode(int sigunguCode, int dealYear, int dealMonth) throws Exception;
 

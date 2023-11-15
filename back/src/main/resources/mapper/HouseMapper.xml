@@ -6,7 +6,7 @@
 
 	<select id="dongCodeList" resultType="DongCodeDto">
 		SELECT * FROM dongcode
-		WHERE dongName LIKE CONCAT('%', #{dongName}, '%') 
+		WHERE dongName LIKE CONCAT('%', #{dongName}, '") 
 	</select>
 
 	<select id="searchByDongCode" resultType="HouseInfoDto">
@@ -16,8 +16,8 @@
 
 	<select id="searchByAptNo" resultType="HouseDealDto">
 		SELECT * FROM housedeal
-		WHERE aptCode = #{aptCode} and dealYear = #{year} and dealMonth = #{month} 
-		ORDER BY dealDay
+		WHERE aptCode = #{aptCode}
+		ORDER BY dealYear desc, dealMonth desc, dealDay desc
 		LIMIT #{offset}, #{limit}
 	</select>
 

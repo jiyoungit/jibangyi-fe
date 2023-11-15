@@ -51,12 +51,10 @@ public class HouseContoller {
 	@GetMapping("/apt-deals")
 	public List<HouseDealDto> searchByAptNo(
 			@RequestParam(required = true) String aptCode, 
-			@RequestParam(required = true) int year, 
-			@RequestParam(required = true) int month,
 			@RequestParam(required = false, defaultValue = RECORD_OFFSET) int offset, 
 			@RequestParam(required = false, defaultValue = RECORD_LIMIT) int limit
 			) throws Exception {
-		return hService.searchByAptNo(aptCode, year, month, offset, limit);
+		return hService.searchByAptNo(aptCode, offset, limit);
 	}
 
 //	@ApiOperation(value = "아파트 거래 목록", notes = "아파트 번호, 거래 시기로 검색한 결과 목록을 반환합니다.")
