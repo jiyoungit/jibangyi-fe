@@ -1,31 +1,40 @@
 <script setup>
 import { ref } from 'vue';
 import { findDongCode, listAptInfos } from '@/api/apt.js';
+import { useRouter } from 'vue-router';
+
 const popularSearchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
 
 const searchWord = ref("");
 const dongInfos = ref([]);
+const router = useRouter();
 
-const searchDong = () => { // 검색어가 포함된 동이름 전체 검색
-  findDongCode(
-    searchWord.value,
-    ({ data }) => {
-      dongInfos.value = [];
-      data.forEach((e) => {
-        dongInfos.value.push(e);
-      });
-    },
-    (err) => {
-      console.log(err);
-    },
-  );
-};
+// const searchDong = () => { // 검색어가 포함된 동이름 전체 검색
+//   findDongCode(
+//     searchWord.value,
+//     ({ data }) => {
+//       dongInfos.value = [];
+//       data.forEach((e) => {
+//         dongInfos.value.push(e);
+//       });
+//     },
+//     (err) => {
+//       console.log(err);
+//     },
+//   );
+// };
 
-const searchDeal = (dongCode) => {
-  listAptInfos(
-    dongCode,
+// const searchDeal = (dongCode) => {
+//   router.push({
+//     name: 'deal',
+//     query: {
 
-  )
+//     }
+//   })
+// }
+
+const moveToSearchDeal = () => {
+
 }
 </script>
 
@@ -34,16 +43,21 @@ const searchDeal = (dongCode) => {
   <div class="searchWrapper">
     <div class="searchInner">
       <h1 class="searchText">홍박사님을 아세요?</h1>
-      <v-form class="mx-auto mt-8" color="grey-lighten-3" @input="searchDong">
-        <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
-          v-model="searchWord"></v-text-field>
-        <v-card v-show="dongInfos.length > 0" class="mx-auto" width="1020">
-          <v-list-item v-for="dong in dongInfos" :key="dong.dongCode" @click="searchDeal(dong.dongCode)">
-            {{ dong.sidoName }} {{ dong.gugunName }} {{ dong.dongName }}
-          </v-list-item>
-        </v-card>
-        <!-- <div ></div> -->
-      </v-form>
+      <router-link to="/deal">
+        <v-form class="mx-auto mt-8" color="grey-lighten-3" @click="moveToSearchDeal">
+          <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
+            v-model="searchWord"></v-text-field>
+        </v-form>
+      </router-link>
+      <!-- <v-form class="mx-auto mt-8" color="grey-lighten-3" @input="searchDong">
+                    <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
+                      v-model="searchWord"></v-text-field>
+                    <v-card v-show="dongInfos.length > 0" class="mx-auto" width="1020">
+                      <v-list-item v-for="dong in dongInfos" :key="dong.dongCode" @click="searchDeal(dong.dongCode)">
+                        {{ dong.sidoName }} {{ dong.gugunName }} {{ dong.dongName }}
+                      </v-list-item>
+                    </v-card>
+                  </v-form> -->
     </div>
   </div>
   <div class="guideCard__Wrapper">
