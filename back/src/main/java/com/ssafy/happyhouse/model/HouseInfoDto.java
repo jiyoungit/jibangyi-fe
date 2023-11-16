@@ -33,5 +33,4 @@ public class HouseInfoDto {
 	private String lng;
 	private String lat;
 
-
 }

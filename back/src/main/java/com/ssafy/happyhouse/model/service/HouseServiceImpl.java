@@ -10,6 +10,7 @@ import com.ssafy.happyhouse.model.DongCodeDto;
 import com.ssafy.happyhouse.model.HouseDealAndInfoDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseDealParameterDto;
+import com.ssafy.happyhouse.model.HouseInfoDetailDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapper;
 
@@ -30,6 +31,11 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
+	public HouseInfoDetailDto searchByAptNo(String aptCode) {
+		return mapper.searchDetailByAptNo(aptCode);
+	}
+	
+	@Override
 	public List<HouseDealDto> searchByAptNo(String aptCode, int offset, int limit) throws Exception{
 		return mapper.searchByAptNo(aptCode, offset, limit);
 	}
@@ -48,5 +54,7 @@ public class HouseServiceImpl implements HouseService {
 	public List<HouseInfoDto> searchAptInfoByCoold(String lat, String lng, int range, int offset, int limit) throws Exception {
 		return mapper.searchAptInfoByCoold(lat, lng, range, offset, limit);
 	}
+
+
 
 }

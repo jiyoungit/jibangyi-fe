@@ -9,6 +9,7 @@ import com.ssafy.happyhouse.model.DongCodeDto;
 import com.ssafy.happyhouse.model.HouseDealAndInfoDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseDealParameterDto;
+import com.ssafy.happyhouse.model.HouseInfoDetailDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 
 @Mapper
@@ -29,5 +30,7 @@ public interface HouseMapper {
 
 	List<HouseInfoDto> searchAptInfoByCoold(@Param("lat")String lat, @Param("lng")String lng, 
 			@Param("range")int range, @Param("offset")int offset, @Param("limit")int limit);
+
+	HouseInfoDetailDto searchDetailByAptNo(String aptCode);
 
 }
