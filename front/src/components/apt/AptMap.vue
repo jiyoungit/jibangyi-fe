@@ -1,12 +1,14 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import { listAptInfosByCoold } from "../../api/apt";
+import { listAptInfosByCoold } from "@/api/apt";
+import { useDealStore } from '@/stores/deal';
+import { storeToRefs } from 'pinia';
 
 var map;
-const positions = ref([]);
 const markers = ref([]);
 
-const props = defineProps({ apts: Array, selectApt: Object, dong: Object });
+const dealStore = useDealStore();
+const { allDeals, dongCoord } = storeToRefs(dealStore);
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -23,22 +25,14 @@ onMounted(() => {
 
 const initMap = () => {
   const container = document.getElementById("map");
-  let lat = 37.501477;
-  let lng = 127.039724;
-  if (JSON.stringify(dong) !== '{}') {
-    lat = dong.clat;
-    lng = dong.clng;
-  }
   const options = {
-    center: new kakao.maps.LatLng(lat, lng),
+    center: new kakao.maps.LatLng(37.501477, 127.039724),
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
 
-  // loadMarkers();
   traceCenterCoolds();
 };
-
 
 const deleteMarkers = () => {
   if (markers.value.length > 0) {
@@ -47,10 +41,10 @@ const deleteMarkers = () => {
 };
 
 watch(
-  () => props.selectApt.value,
+  () => dongCoord.value,
   () => {
     // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(props.selectApt.lat, props.selectApt.lng);
+    var moveLatLon = new kakao.maps.LatLng(dongCoord.value.clat, dongCoord.value.clng);
 
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
@@ -59,22 +53,21 @@ watch(
   { deep: true }
 );
 
-watch(
-  () => props.apts.value,
-  () => {
-    positions.value = [];
-    props.apts.forEach((station) => {
-      let obj = {};
-      obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
-      obj.title = station.statNm;
+// watch(
+//   () => props.apts.value,
+//   () => {
+//     positions.value = [];
+//     props.apts.forEach((station) => {
+//       let obj = {};
+//       obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
+//       obj.title = station.statNm;
 
-      positions.value.push(obj);
-    });
-    loadMarkers(positions.value);
-  },
-  { deep: true }
-);
-
+//       positions.value.push(obj);
+//     });
+//     loadMarkers(positions.value);
+//   },
+//   { deep: true }
+// );
 
 const loadMarkers = (data) => { // data: positions.value, listAptInfosByCoord -> data
   // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
@@ -113,7 +106,6 @@ const loadMarkers = (data) => { // data: positions.value, listAptInfosByCoord ->
 function traceCenterCoolds() {
   // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
   kakao.maps.event.addListener(map, 'dragend', function () {
-
     // 지도 중심좌표를 얻어옵니다 
     const latlng = map.getCenter();
 
@@ -130,7 +122,6 @@ function traceCenterCoolds() {
         console.log(error);
       }
     )
-
   });
 }
 </script>
@@ -143,5 +134,6 @@ function traceCenterCoolds() {
 #map {
   width: 100vw;
   height: 100vh;
+  z-index: 0;
 }
 </style>
