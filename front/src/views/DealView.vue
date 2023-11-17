@@ -5,6 +5,7 @@ import AptDetail from '../components/apt/AptDetail.vue';
 </script>
 <template>
   <AptSearch />
+  <AptDetail />
   <AptMap />
 </template>
 

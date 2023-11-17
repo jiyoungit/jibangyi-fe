@@ -1,0 +1,42 @@
+$primary: #005792;
+$secondary: #a5d0f3;
+
+#map {
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+.overlaybox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 66px;
+  height: 75px;
+  background-image: url('@/assets/imgs/markerBackground.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-bottom: 20px;
+  cursor: pointer;
+  .boxtitle {
+    color: $primary;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .boxcontent {
+    text-align: center;
+    .price {
+      padding-top: 3px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .pricePerFeet {
+      padding-top: 3px;
+      font-size: 11px;
+      color: $secondary;
+    }
+  }
+}

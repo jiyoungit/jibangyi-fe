@@ -23,6 +23,10 @@ function listAptDealsByAptCode(param, success, fail) {
   local.get(`${PREFIX}/apt-deals`, { params: param }).then(success).catch(fail)
 }
 
+function getAptInfoByAptCode(aptCode, success, fail) {
+  local.get(`${PREFIX}/apt-deals/info/${aptCode}`).then(success).catch(fail)
+}
+
 function listAptInfosByCoold(param, success, fail) {
   // const param = {
   //   "lat": "",
@@ -48,6 +52,7 @@ export {
   findDongCode,
   listAptInfos,
   listAptDealsByAptCode,
+  getAptInfoByAptCode,
   listAptInfosByCoold,
   getAptDetail,
 }

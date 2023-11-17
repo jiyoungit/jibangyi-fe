@@ -5,10 +5,11 @@ import { useDealStore } from '@/stores/deal';
 import { storeToRefs } from 'pinia';
 
 var map;
-const markers = ref([]);
+const overlays = ref([]);
+const clusterer = ref();
 
 const dealStore = useDealStore();
-const { allDeals, dongCoord } = storeToRefs(dealStore);
+const { dongCoord } = storeToRefs(dealStore);
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -34,9 +35,15 @@ const initMap = () => {
   traceCenterCoolds();
 };
 
-const deleteMarkers = () => {
-  if (markers.value.length > 0) {
-    markers.value.forEach((marker) => marker.setMap(null));
+const aptClicked = (aptCode) => {
+  console.log(aptCode);
+  dealStore.getAptInfo(aptCode);
+  dealStore.aptDetail(aptCode);
+}
+
+const deleteOverlays = () => {
+  if (overlays.value.length > 0) {
+    overlays.value.forEach((overlay) => overlay.setMap(null));
   }
 };
 
@@ -53,54 +60,54 @@ watch(
   { deep: true }
 );
 
-// watch(
-//   () => props.apts.value,
-//   () => {
-//     positions.value = [];
-//     props.apts.forEach((station) => {
-//       let obj = {};
-//       obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
-//       obj.title = station.statNm;
+const loadMarkers = (data) => {
+  deleteOverlays();
 
-//       positions.value.push(obj);
-//     });
-//     loadMarkers(positions.value);
-//   },
-//   { deep: true }
-// );
+  overlays.value = [];
+  data.forEach((position, index) => {
 
-const loadMarkers = (data) => { // data: positions.value, listAptInfosByCoord -> data
-  // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
-  deleteMarkers();
+    const content = document.createElement('div');
+    content.innerHTML = // 평수, 시세, 평당가격
+      '<div id="overlaybox' + index + '" class="overlaybox">' +
+      '  <div class="boxtitle">' +
+      '    <div>' + Math.round(position.avgArea / 3.3) + '평</div>' +
+      '  </div>' +
+      '  <div class="boxcontent">' +
+      '    <div class="price">' + Math.round(position.avgDealAmount / 1000) / 10 + '억</div>' +
+      '    <div class="pricePerFeet">' + Math.floor(position.avgDealAmount / position.avgArea) + '만/평</div>' +
+      '  </div>' +
+      '</div>';
 
-  // 마커 이미지를 생성합니다
-  //   const imgSrc = require("@/assets/map/markerStar.png");
-  // 마커 이미지의 이미지 크기 입니다
-  //   const imgSize = new kakao.maps.Size(24, 35);
-  //   const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
+    content.addEventListener('click', () => aptClicked(position.aptCode));
 
-  // 마커를 생성합니다
-  markers.value = [];
-  data.forEach((position) => {
-    const marker = new kakao.maps.Marker({
-      map: map, // 마커를 표시할 지도
-      // position: position.latlng, // 마커를 표시할 위치
+    const customOverlay = new kakao.maps.CustomOverlay({
+      map: map,
       position: new kakao.maps.LatLng(position.lat, position.lng),
-      title: position.apartmentName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됨.
-      clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
-      // image: markerImage, // 마커의 이미지
+      content: content,
     });
-    markers.value.push(marker);
-  });
 
-  // 4. 지도를 이동시켜주기
-  // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
-  // const bounds = positions.value.reduce(
-  //   (bounds, position) => bounds.extend(position.latlng),
-  //   new kakao.maps.LatLngBounds()
-  // );
+    overlays.value = [...overlays.value, customOverlay];
+  })
 
-  // map.setBounds(bounds);
+  // clusterer.value = new kakao.maps.MarkerClusterer({
+  //   map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+  //   averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+  //   minLevel: 10 // 클러스터 할 최소 지도 레벨 
+  // });
+
+  // // 데이터에서 좌표 값을 가지고 커스텀 오버레이를 표시합니다
+  // // 마커 클러스터러로 관리할 커스텀 오버레이 객체는 생성할 때 지도 객체를 설정하지 않습니다
+  // overlays.value = data.map((i, position) => {
+  //   return new kakao.maps.CustomOverlay({
+  //     position: new kakao.maps.LatLng(position.lat, position.lng),
+  //     content: content,
+  //   });
+  // });
+
+  // console.log(overlays.value);
+
+  // // 클러스터러에 커스텀 오버래이들을 추가합니다
+  // clusterer.value.addMarkers(overlays.value);
 };
 
 function traceCenterCoolds() {
@@ -109,12 +116,8 @@ function traceCenterCoolds() {
     // 지도 중심좌표를 얻어옵니다 
     const latlng = map.getCenter();
 
-    // let message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
-    // message += '경도는 ' + latlng.getLng() + ' 입니다';
-    // console.log(message);
-
     listAptInfosByCoold(
-      { lat: latlng.getLat(), lng: latlng.getLng(), range: 5, limit: 200 },
+      { lat: latlng.getLat(), lng: latlng.getLng(), range: 5, limit: 2000 },
       ({ data }) => {
         loadMarkers(data);
       },
@@ -130,10 +133,6 @@ function traceCenterCoolds() {
   <div id="map"></div>
 </template>
 
-<style>
-#map {
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-}
+<style lang="scss">
+@import '@/assets/scss/apt/map.scss';
 </style>
