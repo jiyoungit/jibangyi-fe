@@ -33,8 +33,8 @@ public class HouseContoller {
 	HouseService hService;
 
 	@ApiOperation(value = "동 코드 목록", notes = "동 이름으로 검색한 결과 목록을 반환합니다.")
-	@GetMapping("/dongcodes/{dongName}")
-	public List<DongCodeDto> dongCodeList(@PathVariable String dongName) throws Exception {
+	@GetMapping(value = {"/dongcodes/{dongName}", "/dongcodes"})
+	public List<DongCodeDto> dongCodeList(@PathVariable(required = false) String dongName) throws Exception {
 		return hService.dongCodeList(dongName);
 	}
 
