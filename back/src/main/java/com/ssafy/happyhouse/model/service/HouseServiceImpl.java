@@ -1,7 +1,6 @@
 package com.ssafy.happyhouse.model.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseDealParameterDto;
 import com.ssafy.happyhouse.model.HouseInfoDetailDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.HouseInfoSimpleDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapper;
 
 @Service
@@ -51,7 +51,7 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<HouseInfoDto> searchAptInfoByCoold(String lat, String lng, int range, int offset, int limit) throws Exception {
+	public List<HouseInfoSimpleDto> searchAptInfoByCoold(String lat, String lng, int range, int offset, int limit) throws Exception {
 		return mapper.searchAptInfoByCoold(lat, lng, range, offset, limit);
 	}
 

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.model.DongCodeDto;
-import com.ssafy.happyhouse.model.HouseDealAndInfoDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDetailDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
+import com.ssafy.happyhouse.model.HouseInfoSimpleDto;
 import com.ssafy.happyhouse.model.service.HouseService;
 
 import io.swagger.annotations.Api;
@@ -50,7 +50,7 @@ public class HouseContoller {
 
 	@ApiOperation(value = "위치 기반 아파트 정보 목록", notes = "위도, 경도 좌표 기반으로 주변 아파트 정보 목록을 반환합니다.")
 	@GetMapping("/apt-infos/coold")
-	public List<HouseInfoDto> searchAptInfoByCoold(
+	public List<HouseInfoSimpleDto> searchAptInfoByCoold(
 			@RequestParam(required = true) String lat, 
 			@RequestParam(required = true) String lng, 
 			@RequestParam(required = true) int range, 

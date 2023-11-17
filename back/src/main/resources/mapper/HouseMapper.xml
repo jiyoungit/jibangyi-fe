@@ -28,18 +28,19 @@
 		WHERE aptCode=#{aptCode};
 	</select>
 
-	<select id="searchAptInfoByCoold" resultType="HouseInfoDto">
-		SELECT hi.* 
-		FROM houseinfo hi JOIN (
+	<select id="searchAptInfoByCoold" resultType="HouseInfoSimpleDto">
+		SELECT hs.*, hi.lat, hi.lng
+		FROM houseinfo_simple hs JOIN (
 			SELECT AptCode 
-		    FROM houseinfopoint hip
-		    WHERE ST_Contains(
-		    ST_Buffer(
+			FROM houseinfopoint hip
+			WHERE ST_Contains(
+			ST_Buffer(
 				ST_PointFromText(
 					CONCAT('POINT(', CAST(#{lng} AS DECIMAL(20, 12)), ' ', CAST(#{lat} AS DECIMAL(20, 12)), ')'), 5179
 				), #{range} / 111.1
 			), hip.point)
-		) r using(AptCode)
+		) r using(AptCode) JOIN
+		houseinfo hi using(aptCode)
 		LIMIT #{offset}, #{limit}
 	</select>
 

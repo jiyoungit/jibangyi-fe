@@ -13,9 +13,8 @@ import lombok.ToString;
 @ToString
 public class HouseInfoSimpleDto {
 	private long aptCode;
-	private String aptName;
-	private String recentDealAmount;
-	private String area;
+	private int avgDealAmount;
+	private int avgArea;
 	private String lng;
 	private String lat;
 }
