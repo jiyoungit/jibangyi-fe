@@ -43,7 +43,7 @@ public class HouseServiceImpl implements HouseService {
 		int pageNo = param.getPageNo();
 		int spp = param.getSpp();
 		int offset = (pageNo - 1) * spp;
-		int limit = offset + spp;
+		int limit = spp;
 
 		int totalSize = mapper.getTotalAptDealsByAptCode(aptCode);
 		int lastPageNo = totalSize / spp + 1;

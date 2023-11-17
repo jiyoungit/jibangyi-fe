@@ -41,9 +41,14 @@ function listAptInfosByCoold(param, success, fail) {
     .catch(fail)
 }
 
-function getAptDetail(AptCode, success, fail) {
+function getAptDetail(param, success, fail) {
+  // const param = {
+  //   "aptCode": "",
+  //   "pageNo": 0,
+  //   "spp": 0
+  // }
   local
-    .get(`${PREFIX}/apt-deals/info/${AptCode}`)
+    .get(`${PREFIX}/apt-deals`, { params: param })
     .then(success)
     .catch(fail)
 }
