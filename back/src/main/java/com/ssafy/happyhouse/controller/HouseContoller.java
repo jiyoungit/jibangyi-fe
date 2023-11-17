@@ -70,10 +70,10 @@ public class HouseContoller {
 		return hService.searchByAptNo(aptCode, offset, limit);
 	}
 
-	@ApiOperation(value = "아파트 코드 기반 아파트 거래 기본 정보", notes = "아파트 번호, 거래 시기로 검색한 결과 목록을 반환합니다.")
-	@GetMapping("/apt-deals/info")
-	public HouseInfoDetailDto searchByAptNo(
-			@RequestParam(required = true) String aptCode 
+	@ApiOperation(value = "아파트 코드 기반 아파트 거래 기본 정보", notes = "아파트 번호로 해당 아파트에 대한 기본 정보를 반환합니다.")
+	@GetMapping("/apt-deals/info/{aptCode}")
+	public HouseInfoDetailDto selectByAptNo(
+			@PathVariable(required = true) String aptCode 
 			) throws Exception {
 		return hService.searchByAptNo(aptCode);
 	}

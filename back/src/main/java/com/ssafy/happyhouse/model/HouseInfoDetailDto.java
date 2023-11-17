@@ -18,9 +18,9 @@ public class HouseInfoDetailDto {
 	private String recentDealAmount;
 	private String minDealAmount;
 	private String maxDealAmount;
+	private String avgDealAmount;
 	private String aptName;
 	private String address;
 	private String buildYear;
 	private String firstDealDate;
-	private List<HouseDealDto> aptDeals;
 }

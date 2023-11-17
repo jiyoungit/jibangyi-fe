@@ -21,33 +21,13 @@
 		ORDER BY dealYear desc, dealMonth desc, dealDay desc
 		LIMIT #{offset}, #{limit}
 	</select>
+	
+	<select id="searchDetailByAptNo" resultType="HouseInfoDetailDto">
+		SELECT aptCode, recentDealAmount, minDealAmount, maxDealAmount, avgDealAmount, apartmentName aptName, address, buildYear, firstDealDate 
+		FROM whereismyhome.houseinfo_detail
+		WHERE aptCode=#{aptCode};
+	</select>
 
-	<select id="searchBySigunguCode"
-		resultType="HouseDealAndInfoDto" parameterType="string">
-		SELECT hd.no,
-		hd.dealAmount, hd.dealYear, hd.dealMonth, hd.dealDay, hd.area,
-		hd.floor, hd.cancelDealType,
-		hi.*
-		FROM housedeal hd, houseinfo hi
-		WHERE hd.aptCode = hi.aptCode
-		and hi.sigunguCode = #{sCode}
-		and hd.dealYear = #{dYear}
-		and hd.dealMonth = #{dMonth}
-		ORDER BY dealDay desc
-		LIMIT 0, 20
-	</select>
-	
-	<select id="searchAptDeals" parameterType="HouseDealParameterDto" resultType="HouseDealDto">
-		SELECT hd.*
-		FROM housedeal hd, houseinfo hi
-		WHERE hd.aptCode = hi.aptCode
-		and hi.sigunguCode = #{sCode}
-		and hd.dealYear = #{dYear}
-		and hd.dealMonth = #{dMonth}
-		ORDER BY dealDay desc
-		LIMIT 0, 20
-	</select>
-	
 	<select id="searchAptInfoByCoold" resultType="HouseInfoDto">
 		SELECT hi.* 
 		FROM houseinfo hi JOIN (
