@@ -15,12 +15,6 @@
 		WHERE dongCode = #{dongCode} LIMIT #{offset}, #{limit}
 	</select>
 
-	<select id="searchByAptNo" resultType="HouseDealDto">
-		SELECT * FROM housedeal
-		WHERE aptCode = #{aptCode}
-		ORDER BY dealYear desc, dealMonth desc, dealDay desc
-		LIMIT #{offset}, #{limit}
-	</select>
 	
 	<select id="searchDetailByAptNo" resultType="HouseInfoDetailDto">
 		SELECT aptCode, recentDealAmount, minDealAmount, maxDealAmount, avgDealAmount, apartmentName aptName, address, buildYear, firstDealDate 
@@ -42,6 +36,17 @@
 		) r using(AptCode) JOIN
 		houseinfo hi using(aptCode)
 		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="searchAptDeals" resultType="HouseDealDto">
+		SELECT * FROM housedeal
+		WHERE aptCode = #{aptCode}
+		ORDER BY dealYear desc, dealMonth desc, dealDay desc
+		LIMIT #{offset}, #{limit}
+	</select>
+	
+	<select id="getTotalAptDealsByAptCode" resultType="int">
+		SELECT COUNT(*) FROM housedeal WHERE aptCode=#{aptCode}
 	</select>
 
 </mapper>

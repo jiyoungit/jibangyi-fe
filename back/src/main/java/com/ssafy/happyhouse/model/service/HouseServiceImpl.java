@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.happyhouse.model.DongCodeDto;
 import com.ssafy.happyhouse.model.HouseDealAndInfoDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
+import com.ssafy.happyhouse.model.HouseDealPageDto;
 import com.ssafy.happyhouse.model.HouseDealParameterDto;
 import com.ssafy.happyhouse.model.HouseInfoDetailDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
@@ -36,8 +37,24 @@ public class HouseServiceImpl implements HouseService {
 	}
 	
 	@Override
-	public List<HouseDealDto> searchByAptNo(String aptCode, int offset, int limit) throws Exception{
-		return mapper.searchByAptNo(aptCode, offset, limit);
+	public HouseDealPageDto searchByAptNo(HouseDealParameterDto param) throws Exception{
+		
+		String aptCode = param.getAptCode();
+		int pageNo = param.getPageNo();
+		int spp = param.getSpp();
+		int offset = (pageNo - 1) * spp;
+		int limit = offset + spp;
+
+		int totalSize = mapper.getTotalAptDealsByAptCode(aptCode);
+		int lastPageNo = totalSize / spp + 1;
+		
+		List<HouseDealDto> list = mapper.searchAptDeals(aptCode, offset, limit);
+		HouseDealPageDto houseDealPageDto = new HouseDealPageDto();
+		houseDealPageDto.setDealList(list);
+		houseDealPageDto.setCurrentpageNo(pageNo);
+		houseDealPageDto.setLastPageNo(lastPageNo);
+		
+		return houseDealPageDto;
 	}
 
 	@Override
@@ -46,15 +63,8 @@ public class HouseServiceImpl implements HouseService {
 	}
 
 	@Override
-	public List<HouseDealDto> searchAptDeals(HouseDealParameterDto param) {
-		return mapper.searchAptDeals(param);
-	}
-
-	@Override
 	public List<HouseInfoSimpleDto> searchAptInfoByCoold(String lat, String lng, int range, int offset, int limit) throws Exception {
 		return mapper.searchAptInfoByCoold(lat, lng, range, offset, limit);
 	}
-
-
 
 }
