@@ -17,8 +17,6 @@ function listAptInfos(dongCode, success, fail) {
 function listAptDealsByAptCode(param, success, fail) {
   // const param = {
   //   "aptCode": "",
-  //   "dealMonth": 0,
-  //   "dealYear": 0,
   //   "limit": 0,
   //   "offset": 0
   // }
