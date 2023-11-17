@@ -1,18 +1,20 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { findDongCode, listAptInfos } from '@/api/apt';
+import { findDongCode, listAptDealsByAptCode, getAptInfoByAptCode } from '@/api/apt';
 
 export const useDealStore = defineStore(
   'deal',
   () => {
     const dongCode = ref('');
     const dongInfo = ref({});
+    const aptDealList = ref([]);
+    const aptInfo = ref({});
     const dongInfos = ref([]);
-    const dealInfos = ref([]);
 
     const allDongs = computed(() => dongInfos.value);
-    const allDeals = computed(() => dealInfos.value);
     const dongCoord = computed(() => dongInfo.value);
+    const allDeals = computed(() => aptDealList.value);
+    const oneApt = computed(() => aptInfo.value);
     
     const findDong = (searchWord) => {
       findDongCode(searchWord, ({ data }) => {
@@ -29,19 +31,25 @@ export const useDealStore = defineStore(
 
     const searchDeal = (dong) => { // dongCode
       dongInfo.value = dong;
-      listAptInfos(dong.dongCode, ({ data }) => {
-        dealInfos.value = [];
+    }
+
+    const aptDetail = (aptCode) => {
+      listAptDealsByAptCode({ 'aptCode' : aptCode }, ({ data }) => {
+        aptDealList.value = [];
         data.forEach((e) => {
-          dealInfos.value.push(e);
+          aptDealList.value.push(e);
         })
-      },
-      (err) => {
-        console.log(err);
+      })
+    }
+
+    const getAptInfo = (aptCode) => {
+      getAptInfoByAptCode(aptCode, ({ data }) => {
+        aptInfo.value = data;
       })
     }
 
     return {
-      dongCode, dongInfo, dongInfos, dealInfos, allDongs, allDeals, dongCoord, searchDeal,findDong
+      dongCode, dongInfo, dongInfos, aptInfo, aptDealList, allDongs, dongCoord, allDeals, oneApt, searchDeal,findDong, aptDetail, getAptInfo,
     }
   }
 )
