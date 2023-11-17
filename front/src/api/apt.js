@@ -37,9 +37,9 @@ function listAptInfosByCoold(param, success, fail) {
     .catch(fail)
 }
 
-function getAptDetail(dongCode, success, fail) {
+function getAptDetail(AptCode, success, fail) {
   local
-    .get(`${PREFIX}/apt-deals/info/${dongCode}`)
+    .get(`${PREFIX}/apt-deals/info/${AptCode}`)
     .then(success)
     .catch(fail)
 }
