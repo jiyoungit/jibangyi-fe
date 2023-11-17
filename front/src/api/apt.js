@@ -17,8 +17,6 @@ function listAptInfos(dongCode, success, fail) {
 function listAptDealsByAptCode(param, success, fail) {
   // const param = {
   //   "aptCode": "",
-  //   "dealMonth": 0,
-  //   "dealYear": 0,
   //   "limit": 0,
   //   "offset": 0
   // }
@@ -43,10 +41,18 @@ function listAptInfosByCoold(param, success, fail) {
     .catch(fail)
 }
 
+function getAptDetail(AptCode, success, fail) {
+  local
+    .get(`${PREFIX}/apt-deals/info/${AptCode}`)
+    .then(success)
+    .catch(fail)
+}
+
 export {
   findDongCode,
   listAptInfos,
   listAptDealsByAptCode,
   getAptInfoByAptCode,
   listAptInfosByCoold,
+  getAptDetail,
 }
