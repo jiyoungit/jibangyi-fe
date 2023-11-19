@@ -138,4 +138,22 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "회원가입", notes = "입력받은 회원정보로 로그인.")
+	@PostMapping("/register")
+	public ResponseEntity<Map<String, Object>> register(
+			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
+		log.debug("register user : {}", memberDto);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			memberService.register(memberDto);
+			status = HttpStatus.CREATED;
+		} catch (Exception e) {
+			log.debug("회원가입 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.CONFLICT;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }

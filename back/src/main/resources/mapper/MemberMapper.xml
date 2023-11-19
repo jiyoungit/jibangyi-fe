@@ -44,4 +44,13 @@
 		where user_id = #{userId}
 	</update>
 	
+	<insert id="register">
+		insert into members (user_name, user_id, user_password, email_id, email_domain, join_date)
+		values (#{userName}, #{userId}, #{userPwd}, #{emailId}, #{emailDomain}, now())
+	</insert>
+	
+	<select id="getUserId">
+		select user_id from members where user_id=#{id}
+	</select>
+	
 </mapper>

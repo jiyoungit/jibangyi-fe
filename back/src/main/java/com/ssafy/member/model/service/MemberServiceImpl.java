@@ -49,4 +49,14 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.deleteRefreshToken(map);
 	}
 
+	@Override
+	public void register(MemberDto memberDto) throws Exception {
+		String id = memberMapper.getUserId(memberDto.getUserId());
+		if (id != null)
+			throw new Exception("중복된 아이디입니다.");
+		int cnt = memberMapper.register(memberDto);
+		if (cnt == 0)
+			throw new Exception("회원가입에 실패했습니다.");
+	}
+
 }
