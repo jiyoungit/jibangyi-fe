@@ -2,15 +2,17 @@
 import Header from './components/common/Header.vue';
 import Footer from './components/common/Footer.vue';
 import MainView from './views/MainView.vue';
+import userTest from './components/test/userTest.vue';
 </script>
 
 <template>
   <div id="app">
-    <div class="container">
+    <userTest />
+    <!-- <div class="container">
       <Header />
       <router-view />
       <Footer />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -50,4 +52,5 @@ html {
   font-family: 'Noto Sans KR';
   src: url('assets/fonts/NotoSansKR-Bold.otf');
   font-weight: 600;
-}</style>
+}
+</style>
