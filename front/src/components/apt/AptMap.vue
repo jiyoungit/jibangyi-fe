@@ -9,7 +9,7 @@ const overlays = ref([]);
 const clusterer = ref();
 
 const dealStore = useDealStore();
-const { dongCoord } = storeToRefs(dealStore);
+const { getDongInfo } = storeToRefs(dealStore);
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -36,9 +36,8 @@ const initMap = () => {
 };
 
 const aptClicked = (aptCode) => {
-  console.log(aptCode);
   dealStore.getAptInfo(aptCode);
-  dealStore.aptDetail(aptCode);
+  dealStore.aptDetail(1);
 }
 
 const deleteOverlays = () => {
@@ -48,14 +47,15 @@ const deleteOverlays = () => {
 };
 
 watch(
-  () => dongCoord.value,
+  () => getDongInfo.value,
   () => {
     // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(dongCoord.value.clat, dongCoord.value.clng);
+    var moveLatLon = new kakao.maps.LatLng(getDongInfo.value.clat, getDongInfo.value.clng);
 
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
     map.panTo(moveLatLon);
+    traceCenterCoolds();
   },
   { deep: true }
 );
@@ -111,22 +111,19 @@ const loadMarkers = (data) => {
 };
 
 function traceCenterCoolds() {
-  // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
-  kakao.maps.event.addListener(map, 'dragend', function () {
-    // 지도 중심좌표를 얻어옵니다 
-    const latlng = map.getCenter();
+  const latlng = map.getCenter();
 
-    listAptInfosByCoold(
-      { lat: latlng.getLat(), lng: latlng.getLng(), range: 5, limit: 2000 },
-      ({ data }) => {
-        loadMarkers(data);
-      },
-      (error) => {
-        console.log(error);
-      }
-    )
-  });
+  listAptInfosByCoold(
+    { lat: latlng.getLat(), lng: latlng.getLng(), range: 5, limit: 500 },
+    ({ data }) => {
+      loadMarkers(data);
+    },
+    (error) => {
+      console.log(error);
+    }
+  )
 }
+
 </script>
 
 <template>
