@@ -7,12 +7,11 @@ import userTest from './components/test/userTest.vue';
 
 <template>
   <div id="app">
-    <userTest />
-    <!-- <div class="container">
+    <div class="container">
       <Header />
       <router-view />
       <Footer />
-    </div> -->
+    </div>
   </div>
 </template>
 
