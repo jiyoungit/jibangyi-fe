@@ -6,32 +6,8 @@ import { useRouter } from 'vue-router';
 const popularSearchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
 
 const searchWord = ref("");
-const dongInfos = ref([]);
+const dongList = ref([]);
 const router = useRouter();
-
-// const searchDong = () => { // 검색어가 포함된 동이름 전체 검색
-//   findDongCode(
-//     searchWord.value,
-//     ({ data }) => {
-//       dongInfos.value = [];
-//       data.forEach((e) => {
-//         dongInfos.value.push(e);
-//       });
-//     },
-//     (err) => {
-//       console.log(err);
-//     },
-//   );
-// };
-
-// const searchDeal = (dongCode) => {
-//   router.push({
-//     name: 'deal',
-//     query: {
-
-//     }
-//   })
-// }
 
 const moveToSearchDeal = () => {
 
@@ -49,15 +25,6 @@ const moveToSearchDeal = () => {
             v-model="searchWord"></v-text-field>
         </v-form>
       </router-link>
-      <!-- <v-form class="mx-auto mt-8" color="grey-lighten-3" @input="searchDong">
-                    <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
-                      v-model="searchWord"></v-text-field>
-                    <v-card v-show="dongInfos.length > 0" class="mx-auto" width="1020">
-                      <v-list-item v-for="dong in dongInfos" :key="dong.dongCode" @click="searchDeal(dong.dongCode)">
-                        {{ dong.sidoName }} {{ dong.gugunName }} {{ dong.dongName }}
-                      </v-list-item>
-                    </v-card>
-                  </v-form> -->
     </div>
   </div>
   <div class="guideCard__Wrapper">
@@ -152,7 +119,6 @@ const moveToSearchDeal = () => {
 .searchText {
   margin-top: 165px;
   line-break: 60px;
-  font-family: 'Noto Sans KR';
   font-size: 40px;
   font-weight: 500;
   color: #fff;
@@ -180,14 +146,12 @@ const moveToSearchDeal = () => {
 
 .guideCard__CardTitle {
   color: rgb(51, 51, 51);
-  font-family: 'Noto Sans KR';
   font-size: 2.2rem;
   font-weight: 600;
 }
 
 .guideCard__CardContext {
   color: rgb(102, 102, 102);
-  font-family: 'Noto Sans KR';
   font-size: 1.5rem;
   line-height: 2.4rem;
   margin-top: 2.5rem;
@@ -219,7 +183,6 @@ const moveToSearchDeal = () => {
 
 .guideFeature__Title {
   color: rgb(51, 51, 51);
-  font-family: 'Noto Sans KR';
   font-weight: 600;
   font-size: 2.7rem;
   margin-bottom: 5px;
@@ -246,7 +209,6 @@ const moveToSearchDeal = () => {
 
 .guideFeature__Card {
   padding: 4.5rem 0 4.35rem 4.5rem;
-  font-family: 'Noto Sans KR';
 }
 
 .guideFeature__CardTitle {

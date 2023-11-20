@@ -59,7 +59,6 @@ nav {
   flex: 0 0 auto;
   align-items: center;
   margin-left: auto;
-  font-family: 'Noto Sans KR';
 }
 
 .menu {
