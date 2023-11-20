@@ -21,8 +21,8 @@ const userPwdCheck = ref("");
 
 const checkFuncs = {
   async isValidId() {
-    const validateId = /^[A-Za-z0-9][A-Za-z0-9]*$/;
-    return validateId.test(joinUser.value.userId); // 조건 실패시
+    const validateId = /^[A-Za-z][A-Za-z0-9]*$/;
+    return validateId.test(joinUser.value.userId) && joinUser.value.userId.length > 4; // 조건 실패시
   },
   async isDupId() {
     await userIdCheck(joinUser.value.userId);
@@ -61,7 +61,7 @@ const checkFuncs = {
 };
 
 const inputValidator = {
-  validId: { check: checkFuncs.isValidId, failed: ref(false), msg: "아이디는 영문과 숫자의 조합으로만 이루어져야 합니다." },
+  validId: { check: checkFuncs.isValidId, failed: ref(false), msg: "아이디는 4글자 이상의 영문과 숫자의 조합으로만 이루어져야 합니다." },
   dupId: { check: checkFuncs.isDupId, failed: ref(false), msg: "아이디가 중복되었습니다." },
   samePw: { check: checkFuncs.isSamePw, failed: ref(false), msg: "동일한 비밀번호를 입력해주세요." },
   validPw: { check: checkFuncs.isValidPw, failed: ref(false), msg: "비밀번호는 8자 이상으로 적어도 하나의 영문, 숫자, 특수기호를 포함해야 합니다." },
@@ -73,8 +73,6 @@ const join = async () => {
   // - 입력 유효성 체크 -
   let failed = false;
   for (const [key, iv] of Object.entries(inputValidator)) {
-    console.log(key, iv);
-    console.log(await iv.check());
     if (await iv.check()) {
       iv.failed.value = false;
     } else {
