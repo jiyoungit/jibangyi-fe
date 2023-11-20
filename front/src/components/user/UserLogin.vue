@@ -67,7 +67,7 @@ const login = async () => {
       </form>
       <div class="btnWrap">
         <button>비밀번호 변경</button>
-        <button>신규 회원가입</button>
+        <button @click="router.push('join')">신규 회원가입</button>
       </div>
     </div>
   </section>

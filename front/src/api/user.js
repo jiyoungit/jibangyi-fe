@@ -22,4 +22,12 @@ async function logout(userid, success, fail) {
   await local.get(`/user/logout/${userid}`).then(success).catch(fail)
 }
 
-export { userConfirm, findById, tokenRegeneration, logout }
+async function join(user, success, fail) {
+  await local.post(`/user/register`, user).then(success).catch(fail)
+}
+
+async function checkDuplicate(userid, success, fail) {
+  await local.post(`/user/checkDuplicate`, { userId: userid }).then(success).catch(fail)
+}
+
+export { userConfirm, findById, tokenRegeneration, logout, join, checkDuplicate }

@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { jwtDecode } from 'jwt-decode';
 
-import { userConfirm, findById, tokenRegeneration, logout } from '@/api/user';
+import { userConfirm, findById, tokenRegeneration, logout, join, checkDuplicate } from '@/api/user';
 import { httpStatusCode } from '@/util/http-status';
 
 export const useMemberStore = defineStore('memberStore', () => {
@@ -13,6 +13,9 @@ export const useMemberStore = defineStore('memberStore', () => {
   const isLoginError = ref(false);
   const userInfo = ref(null);
   const isValidToken = ref(false);
+
+  const isJoinError = ref(false);
+  const isDuplicatedId = ref(false);
 
   const userLogin = async (loginUser) => {
     await userConfirm(
@@ -120,14 +123,48 @@ export const useMemberStore = defineStore('memberStore', () => {
     );
   };
 
+  const userJoin = async (joinUser) => {
+    await join(
+      joinUser,
+      (response) => {
+        if (response.status === httpStatusCode.CREATE) {
+          isJoinError.value = false;
+        } else {
+          isJoinError.value = true;
+        }
+      },
+      (error) => {
+        console.log(error);
+      })
+  }
+
+  const userIdCheck = async (userid) => {
+    await checkDuplicate(
+      userid,
+      (response) => {
+        if (response.status === httpStatusCode.OK && !response.data.isDuplicated) {
+          isDuplicatedId.value = false;
+        } else {
+          isDuplicatedId.value = true;
+        }
+      },
+      (error) => {
+        console.log(error);
+      })
+  }
+
   return {
     isLogin,
     isLoginError,
     userInfo,
     isValidToken,
+    isDuplicatedId,
+
     userLogin,
     getUserInfo,
     tokenRegenerate,
     userLogout,
+    userJoin,
+    userIdCheck,
   };
 });
