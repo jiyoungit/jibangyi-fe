@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.member.model.MemberDto;
+import com.ssafy.member.model.MemberParameterDto;
 import com.ssafy.member.model.service.MemberService;
 import com.ssafy.util.JWTUtil;
 
@@ -142,7 +143,7 @@ public class MemberController {
 	@ApiOperation(value = "회원가입", notes = "입력받은 회원정보로 로그인.")
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, Object>> register(
-			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
+			@RequestBody @ApiParam(value = "회원가입 시 필요한 회원정보(아이디, 비밀번호, 이메일 아이디, 이메일 도메인, 이름).", required = true) MemberDto memberDto) {
 		log.debug("register user : {}", memberDto);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -152,7 +153,27 @@ public class MemberController {
 		} catch (Exception e) {
 			log.debug("회원가입 에러 발생 : {}", e);
 			resultMap.put("message", e.getMessage());
-			status = HttpStatus.CONFLICT;
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "아이디 중복 체크", notes = "해당 아이디가 이미 있는지 확인.")
+	@PostMapping("/checkDuplicate")
+	public ResponseEntity<Map<String, Object>> checkDuplicate(
+			@RequestBody @ApiParam(value = "중복 체크를 할 아이디.", required = true) MemberParameterDto.DupilcatedId dto) {
+		String userId = dto.getUserId();
+		log.debug("check user : {}", userId);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			boolean isDuplicated = memberService.checkDuplicate(userId);
+			resultMap.put("isDuplicated", isDuplicated);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("아이디 중복 체크 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

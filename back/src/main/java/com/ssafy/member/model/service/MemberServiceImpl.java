@@ -59,4 +59,12 @@ public class MemberServiceImpl implements MemberService {
 			throw new Exception("회원가입에 실패했습니다.");
 	}
 
+	@Override
+	public boolean checkDuplicate(String userId) throws Exception {
+		String id = memberMapper.getUserId(userId);
+		if (id != null)
+			return true;
+		return false;
+	}
+
 }
