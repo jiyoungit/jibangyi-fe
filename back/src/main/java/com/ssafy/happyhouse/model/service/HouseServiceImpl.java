@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.model.DongCodeDto;
-import com.ssafy.happyhouse.model.HouseDealAndInfoDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseDealPageDto;
 import com.ssafy.happyhouse.model.HouseDealParameterDto;
@@ -55,11 +54,6 @@ public class HouseServiceImpl implements HouseService {
 		houseDealPageDto.setLastPageNo(lastPageNo);
 		
 		return houseDealPageDto;
-	}
-
-	@Override
-	public List<HouseDealAndInfoDto> searchBySigunguCode(int sigunguCode, int dealYear, int dealMonth) throws Exception{
-		return mapper.searchBySigunguCode(sigunguCode, dealYear, dealMonth);
 	}
 
 	@Override

@@ -6,10 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.happyhouse.model.DongCodeDto;
-import com.ssafy.happyhouse.model.HouseDealAndInfoDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
-import com.ssafy.happyhouse.model.HouseDealPageDto;
-import com.ssafy.happyhouse.model.HouseDealParameterDto;
 import com.ssafy.happyhouse.model.HouseInfoDetailDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.HouseInfoSimpleDto;
@@ -21,10 +18,6 @@ public interface HouseMapper {
 
 	List<HouseInfoDto> searchByDongCode(@Param("dongCode") String dongCode, @Param("offset") int offset,
 			@Param("limit") int limit);
-
-	List<HouseDealAndInfoDto> searchBySigunguCode(@Param("sCode") int sigunguCode, @Param("dYear") int dealYear,
-			@Param("dMonth") int dealMonth);
-
 
 	List<HouseInfoSimpleDto> searchAptInfoByCoold(@Param("lat")String lat, @Param("lng")String lng, 
 			@Param("range")int range, @Param("offset")int offset, @Param("limit")int limit);
