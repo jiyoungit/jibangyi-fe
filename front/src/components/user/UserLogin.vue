@@ -1,31 +1,35 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+// import { useMenuStore } from "@/stores/menu";
 
-let message = ref('');
-let userid = ref('');
-let userpw = ref('');
+const router = useRouter();
 
-////////////////////// 예외 처리
-// document.querySelector("#btn-mv-join").addEventListener("click", function () {
-// location.href = "${root}/user?action=mvjoin";
-// });
-// document.querySelector("#btn-login").addEventListener("click", function () {
-//   if (!document.querySelector("#userid").value) {
-//     alert("아이디 입력!!");
-//     return;
-//   } else if (!document.querySelector("#userpwd").value) {
-//     alert("비밀번호 입력!!");
-//     return;
-//   } else {
-//     let form = document.querySelector("#form-login");
-//     form.setAttribute("action", "${root}/user");
-//     form.submit();
-//   }
-// });
+const memberStore = useMemberStore();
 
-function userLogin() {
-  console.log('사용자 정보: ', userid, userpw);
-}
+const { isLogin } = storeToRefs(memberStore);
+const { userLogin, getUserInfo } = memberStore;
+// const { changeMenuState } = useMenuStore();
+
+const loginUser = ref({
+  userId: "",
+  userPwd: "",
+});
+
+const login = async () => {
+  await userLogin(loginUser.value);
+  let token = sessionStorage.getItem("accessToken");
+  if (isLogin.value) {
+    getUserInfo(token);
+    // changeMenuState();
+    router.push("/");
+  } else {
+    alert("로그인 실패");
+  }
+};
+
 </script>
 
 <template>
@@ -40,7 +44,7 @@ function userLogin() {
           <div class="input">
             <div>
               <div>
-                <input type="text" name="id" id="id" placeholder="아이디 입력" />
+                <input type="text" name="id" id="id" placeholder="아이디 입력" v-model="loginUser.userId"/>
               </div>
             </div>
           </div>
@@ -52,12 +56,12 @@ function userLogin() {
           <div class="input">
             <div>
               <div>
-                <input type="text" name="id" id="id" placeholder="비밀번호 입력" />
+                <input type="text" name="pw" id="pw" placeholder="비밀번호 입력" v-model="loginUser.userPwd"/>
               </div>
             </div>
           </div>
         </div>
-        <button type="submit">
+        <button type="button" @click="login">
           <span>로그인</span>
         </button>
       </form>
