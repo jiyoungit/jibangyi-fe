@@ -1,12 +1,169 @@
-div {
+$third: rgb(255, 204, 204);
+$thirdopacity: rgba(255, 204, 204, 0.5);
+$sidewidth: 400px;
+
+
+aside {
   position: absolute;
-  top: 75px;
-  left: 10px;
-  width: 250px;
+  top: 160px;
+  left: 20px;
+  width: $sidewidth;
+  height: calc(100vh - 180px);
   z-index: 1;
   background: white;
-  border-radius: 10px;
-  padding: 10px;
-
-  
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  .aptNameBox {
+    position: fixed;
+    > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: $sidewidth;
+      background-color: $thirdopacity;
+      border-radius: 5px 5px 0 0;
+      padding: 1.3rem;
+      > h1 {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+      .closeBtn {
+        color: rgb(122, 122, 122);
+        cursor: pointer;
+      }
+    }
+  }
+  .detail {
+    .priceSection {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: stretch;
+      width: 100%;
+      margin-top: 3rem;
+      padding: 2rem 1.2rem 0.6rem 1.2rem;
+      > div {
+        width: 100%;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          width: 100%;
+          margin-bottom: 10px;
+          > p {
+            color: rgb(102, 102, 102);
+            font-size: 1rem;
+            font-weight: 400;
+            min-width: 8.2rem;
+          }
+        }
+      }
+    }
+  }
+  .basicInfo {
+    > .location {
+      display: flex;
+      width: 100%;
+      padding: 1.2rem 1.2rem 1rem 1.2rem;
+      align-items: center;
+      > span {
+        background-color: $third;
+        border-radius: 20px;
+        color: rgb(35, 35, 35);
+        padding: 3px 10px 0.8px;
+        line-height: 1.2rem;
+        margin-right: 7px;
+      }
+      > p {
+        color: rgb(51, 51, 51);
+        font-size: 1rem;
+        font-weight: 500;
+        margin-top: 4px;
+      }
+    }
+    > .homeInfo {
+      display: flex;
+      width: 100%;
+      // margin-top: 3rem;
+      padding: 0 1.2rem 1.2rem 1rem;
+      > ul {
+        list-style-type: disc;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        // flex-wrap: wrap;
+        > li {
+          font-size: 1rem;
+          font-weight: 400;
+          color: rgb(102, 102, 102);
+          text-align: left;
+          margin-left: 1.5rem;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  .dealList {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      thead {
+        display: flex;
+        padding: 0 1.3rem;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        th {
+          line-height: 18px;
+          color: rgb(128, 128, 128);
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+      tbody {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+        padding: 0 1.3rem;
+        > tr {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          margin-bottom: 0.5rem;
+          border-bottom: 1px solid rgb(247, 247, 247); ;
+        }
+        td {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          flex: 3 1 0%;
+          align-items: stretch;
+          margin-bottom: 0.2rem;
+          > div {
+            justify-content: flex-end;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            align-items: center;
+            text-align: right;
+            > span {
+              font-size: 14px;
+              margin-left: 4px;
+              color: rgb(26, 26, 26);
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+    
+  }
+  hr {
+    height: 1px;
+    border: 0; 
+    background-color: rgb(247, 247, 247); 
+    width: 93%; 
+    margin: 0 auto;
+  }
 }

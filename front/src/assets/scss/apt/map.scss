@@ -3,8 +3,12 @@ $secondary: #a5d0f3;
 
 #map {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 80px);
   z-index: 0;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .overlaybox {

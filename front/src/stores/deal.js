@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { findDongCode, listAptDealsByAptCode, getAptInfoByAptCode } from '@/api/apt';
+import { findDongCode, getAptDealListByAptCode, getAptInfoByAptCode } from '@/api/apt';
 
 export const useDealStore = defineStore(
   'deal',
@@ -9,18 +9,25 @@ export const useDealStore = defineStore(
     const dongInfo = ref({});
     const aptDealList = ref([]);
     const aptInfo = ref({});
-    const dongInfos = ref([]);
+    const dongList = ref([]);
 
-    const allDongs = computed(() => dongInfos.value);
-    const dongCoord = computed(() => dongInfo.value);
-    const allDeals = computed(() => aptDealList.value);
+    // pagination
+    const sizePerPage = 7;
+    const totalPage = ref(1);
+
+    // getter
+    const getDongList = computed(() => dongList.value);
+    const getDongInfo = computed(() => dongInfo.value);
+    const getAptDealList = computed(() => aptDealList.value);
     const oneApt = computed(() => aptInfo.value);
+    const getTotalPage = computed(() => totalPage.value);
     
+    // action
     const findDong = (searchWord) => {
       findDongCode(searchWord, ({ data }) => {
-        dongInfos.value = [];
+        dongList.value = [];
         data.forEach((e) => {
-          dongInfos.value.push(e);
+          dongList.value.push(e);
         });
       },
       (err) => {
@@ -33,13 +40,17 @@ export const useDealStore = defineStore(
       dongInfo.value = dong;
     }
 
-    const aptDetail = (aptCode) => {
-      listAptDealsByAptCode({ 'aptCode' : aptCode }, ({ data }) => {
-        aptDealList.value = [];
-        data.forEach((e) => {
-          aptDealList.value.push(e);
-        })
-      })
+    const aptDetail = (currentPage) => {
+      getAptDealListByAptCode({
+        aptCode: aptInfo.value.aptCode,
+        pageNo: currentPage,
+        spp: sizePerPage,
+      },
+        ({ data }) => {
+          aptDealList.value = data.dealList;
+          totalPage.value = data.lastPageNo;
+        },
+        (err) => { console.log(err); });
     }
 
     const getAptInfo = (aptCode) => {
@@ -48,8 +59,12 @@ export const useDealStore = defineStore(
       })
     }
 
+    const clearAptInfo = () => {
+      aptInfo.value = {};
+    }
+
     return {
-      dongCode, dongInfo, dongInfos, aptInfo, aptDealList, allDongs, dongCoord, allDeals, oneApt, searchDeal,findDong, aptDetail, getAptInfo,
+      dongCode, dongInfo, dongList, aptInfo, aptDealList, getDongList, getDongInfo, getAptDealList, oneApt, getTotalPage, searchDeal,findDong, aptDetail, getAptInfo, clearAptInfo,
     }
   }
 )
