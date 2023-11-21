@@ -47,13 +47,14 @@ export const useMemberStore = defineStore('memberStore', () => {
     );
   };
 
-  const getUserInfo = (token) => {
+  const getUserInfo = async (token) => {
     let decodeToken = jwtDecode(token);
-    findById(
+    await findById(
       decodeToken.userId,
       (response) => {
         if (response.status === httpStatusCode.OK) {
           userInfo.value = response.data.userInfo;
+          isValidToken.value = true;
         } else {
           console.log('유저 정보 없음!!!!');
         }
@@ -110,13 +111,15 @@ export const useMemberStore = defineStore('memberStore', () => {
   };
 
   const userLogout = async (userid) => {
-    await logout(
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    isValidToken.value = false;
+    await logout( // db에 있는 리프레쉬 토큰을 null값으로 바꿈
       userid,
       (response) => {
         if (response.status === httpStatusCode.OK) {
           isLogin.value = false;
           userInfo.value = null;
-          isValidToken.value = false;
         } else {
           console.error('유저 정보 없음!!!!');
         }
