@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.board.model.mapper.QnABoardAnswerMapper">
+
+	<resultMap type="qnaBoardAnswerDto" id="answer">
+		<result column="answer_no" property="answerNo"/>
+		<result column="qna_no" property="qnaNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+	
+	<insert id="writeAnswer" parameterType="qnaBoardAnswerDto">
+		INSERT INTO board_qna_answer (qna_no, user_id, subject, content) 
+		VALUES (#{qnaNo}, #{userId}, #{subject}, #{content});
+	</insert>
+	
+	<select id="getAnswer" parameterType="int" resultMap="answer">
+		select b.answer_no, b.qna_no, b.user_id, b.subject, b.content, b.register_time, m.user_name 
+		from board_qna_answer b, members m
+		where b.user_id = m.user_id
+			and b.qna_no = #{qnaNo}
+		order by b.answer_no desc
+		limit 1
+	</select>
+	
+	<update id="modifyAnswer" parameterType="qnaBoardDto">
+		update board_qna_answer
+		set subject = #{subject}, content = #{content}
+		where answer_no = #{answerNo}
+	</update>
+	
+	<delete id="deleteAnswer" parameterType="int">
+		delete from board_qna_answer
+		where qna_no = #{qnaNo}
+	</delete>
+
+</mapper>
