@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.board.model.mapper.QnABoardMapper">
+
+	<resultMap type="qnaBoardDto" id="article">
+		<result column="qna_no" property="qnaNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+	
+	<insert id="writeArticle" parameterType="qnaBoardDto">
+		INSERT INTO board_qna (user_id, subject, content)
+		values (#{userId}, #{subject}, #{content})
+	</insert>
+
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				and subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				and ${key} = #{word}
+			</if>
+		</if>
+	</sql>
+
+	<select id="listArticle" parameterType="map" resultMap="article">
+		select b.qna_no, b.user_id, b.subject, b.hit, b.register_time, m.user_name
+		from board_qna b, members m 
+		where b.user_id = m.user_id
+		<include refid="search"></include>
+		order by b.qna_no desc
+		limit #{start}, #{listsize}
+	</select>
+	
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(qna_no)
+		from board_qna
+		<where>
+			<include refid="search"></include>
+		</where>
+	</select>
+	
+	<select id="getArticle" parameterType="int" resultMap="article">
+		select b.qna_no, b.user_id, b.subject, b.content, b.hit, b.register_time, m.user_name 
+		from board_qna b, members m
+		where b.user_id = m.user_id
+		and b.qna_no = #{qnaNo}
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update board_qna
+		set hit = hit + 1
+		where qna_no = #{qnaNo}
+	</update>
+	
+	<update id="modifyArticle" parameterType="qnaBoardDto">
+		update board_qna
+		set subject = #{subject}, content = #{content}
+		where qna_no = #{qnaNo}
+	</update>
+	
+	<delete id="deleteArticle" parameterType="int">
+		delete from board_qna
+		where qna_no = #{qnaNo}
+	</delete>
+
+</mapper>
