@@ -1,0 +1,48 @@
+section {
+  > div {
+    width: 1020px;
+    margin: 0 auto;
+    padding: 0 10px;
+    table {
+      width: 100%;
+      border-top: 2px solid rgb(127, 127, 127);
+      padding-top: 5px;
+      tbody {
+        list-style: none;
+        tr {
+          width: 100%;
+          border-bottom: 1px solid rgb(238, 238, 238);
+          display: flex;
+          flex-wrap: wrap;
+          padding: 20px 5px;
+          position: relative;
+          td {
+            // margin-bottom: 10px;
+            text-align: left;
+          }
+          .articleSubject {
+            width: 100%;
+            // font-size: 1rem;
+            color: rgb(34, 34, 34);
+          }
+          .userName::before {
+            content: none;
+          }
+          td + td {
+            font-size: 14px;
+            margin-top: 10px;
+          }
+          td + td::before {
+            content: '';
+            display: inline-block;
+            width: 1px;
+            height: 10px;
+            margin: 0 10px;
+            background: #ddd;
+          }
+        }
+      }
+    } 
+  }
+  
+}
