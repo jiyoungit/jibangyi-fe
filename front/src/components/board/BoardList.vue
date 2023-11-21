@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import {listArticle,  } from "@/api/board.js"
+import { listArticle, } from "@/api/board.js"
+import { RouterLink } from "vue-router";
 
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const param = ref({
@@ -11,17 +12,23 @@ const param = ref({
 });
 
 const articles = ref([]);
+const currentPage = ref(1);
+const totalPageCount = ref();
 
 onMounted(() => {
-  listArticle(param.value, 
-  ({data}) => {
-    console.log(data)
-    articles.value = data.articles;
-  },
-  (error) => {
-    console.log(error);
-  })
+  listArticle(param.value,
+    ({ data }) => {
+      console.log(data)
+      articles.value = data.articles;
+      currentPage.value = data.currentPage;
+      totalPageCount.value = data.totalPageCount;
+    },
+    (error) => {
+      console.log(error);
+    })
 })
+
+
 
 //////////////// 조회 버튼
 // let titles = document.querySelectorAll(".article-title");
@@ -64,79 +71,38 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="">
-    <div class="">
-      <h2 class="">
-        <mark class="">글목록</mark>
-      </h2>
-    </div>
-    <div class="">
-      <div class="">
-        <div class="">
-          <button type="button" id="btn-mv-register" class="">글쓰기</button>
-        </div>
-        <div class="">
-          <form class="" id="form-search" action="">
-            <input type="hidden" name="action" value="list" />
-            <input type="hidden" name="pgno" value="1" />
-            <select name="key" id="key" class="" aria-label="검색조건">
-              <option value="" selected>검색조건</option>
-              <option value="article_no">글번호</option>
-              <option value="subject">제목</option>
-              <option value="user_id">작성자</option>
-            </select>
-            <div class="">
-              <input
-                type="text"
-                name="word"
-                id="word"
-                class=""
-                placeholder="검색어..."
-              />
-              <button id="btn-search" class="" type="button">검색</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <table class="">
-        <thead>
-          <tr class="">
-            <th scope="col">글번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">조회수</th>
-            <th scope="col">작성일</th>
-          </tr>
-        </thead>
+  <section>
+    <div>
+      <table>
+        <thead></thead>
         <tbody>
-          <tr v-for="article in articles" :key="article.articleNo" class="">
-            <th scope="row">{{ article.articleNo }}</th>
-            <td class="">
-              <a
-                href="#"
-                class=""
-                data-no="${article.articleNo}"
-                style="text-decoration: none"
-              >
-                {{ article.subject }}
-              </a>
+          <!-- "qnaNo": 25,
+        "userId": "ssafy",
+        "userName": "김싸피",
+        "subject": "string1",
+        "content": null,
+        "hit": 0,
+        "registerTime": "2023-11-21 12:30:19" -->
+          <tr v-for="article in articles" :key="article.qnaNo">
+            <td class="articleSubject">
+              <RouterLink :to="{ name: 'detail', params: { 'id': article.qnaNo } }">
+                <strong>Q.</strong> {{ article.subject }}
+              </RouterLink>
             </td>
-            <td>{{ article.userId }}</td>
+            <td class="userName">{{ article.userName.substring(0, 1) }}**</td>
+            <td>{{ article.registerTime.substring(0, 4) }}.{{ article.registerTime.substring(5, 7) }}.{{
+              article.registerTime.substring(8, 10) }}</td>
             <td>{{ article.hit }}</td>
-            <td>{{ article.registerTime }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- 페이지 네비게이션 -->
-    <!-- <div class="">${navigation.navigator}</div> -->
-  </div>
-  <form id="form-param" method="get" action="">
-    <input type="hidden" id="p-action" name="action" value="" />
-    <input type="hidden" id="p-pgno" name="pgno" value="" />
-    <input type="hidden" id="p-key" name="key" value="" />
-    <input type="hidden" id="p-word" name="word" value="" />
-  </form>
+  </section>
+  <v-pagination v-model="currentPage" :length="totalPageCount" :total-visible="5" prev-icon="mdi-menu-left"
+    next-icon="mdi-menu-right" class="mt-8">
+  </v-pagination>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import '@/assets/scss/board/qna.scss'
+</style>
