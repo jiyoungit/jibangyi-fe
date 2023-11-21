@@ -32,7 +32,7 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
-  traceCenterCoolds();
+  kakao.maps.event.addListener(map, 'dragend', traceCenterCoolds);
 };
 
 const aptClicked = (aptCode) => {
@@ -114,7 +114,7 @@ function traceCenterCoolds() {
   const latlng = map.getCenter();
 
   listAptInfosByCoold(
-    { lat: latlng.getLat(), lng: latlng.getLng(), range: 5, limit: 500 },
+    { lat: latlng.getLat(), lng: latlng.getLng(), range: 3, limit: 500 },
     ({ data }) => {
       loadMarkers(data);
     },
