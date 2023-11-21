@@ -3,15 +3,14 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
-// import { useMenuStore } from "@/stores/menu";
+import { useMenuStore } from "@/stores/menu";
 
 const router = useRouter();
 
 const memberStore = useMemberStore();
-
 const { isLogin, isLoginError } = storeToRefs(memberStore);
 const { userLogin, getUserInfo } = memberStore;
-// const { changeMenuState } = useMenuStore();
+const { changeMenuState } = useMenuStore();
 
 const loginUser = ref({
   userId: "",
@@ -38,7 +37,6 @@ const login = async () => {
   isLoginError.value = false;
   let failed = false;
   for (const [key, iv] of Object.entries(inputValidator)) {
-    console.log(key, iv)
     if (await iv.check()) {
       iv.failed.value = false;
     } else {
@@ -52,7 +50,7 @@ const login = async () => {
   let token = sessionStorage.getItem("accessToken");
   if (isLogin.value) {
     getUserInfo(token);
-    // changeMenuState();
+    // changeMenuState(true);
     router.push("/");
   } else {
     alert("로그인 실패");
