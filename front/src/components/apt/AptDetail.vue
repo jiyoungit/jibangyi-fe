@@ -12,6 +12,10 @@ watch(currentPage, () => {
   dealStore.aptDetail(currentPage.value);
 })
 
+watch(oneApt, () => {
+  currentPage.value = 1;
+})
+
 const closeDealList = () => {
   dealStore.clearAptInfo();
 }
