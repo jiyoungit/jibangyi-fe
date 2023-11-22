@@ -46,16 +46,18 @@ const logout = () => {
 
     <div class="menuwrap">
       <RouterLink :to="{ name: 'deal' }"><span :class="['menu', isHome ? 'home' : '']">집구하기</span></RouterLink>
+      <RouterLink :to="{ name: 'compare' }"><span :class="['menu', isHome ? 'home' : '']">매물 비교</span></RouterLink>
       <RouterLink :to="{ name: 'qna' }"><span :class="['menu', isHome ? 'home' : '']">Q&A 게시판</span></RouterLink>
-      <RouterLink :to="{ name: 'notice' }"><span :class="['menu', isHome ? 'home' : '']">공지사항</span></RouterLink>
       <template v-for="m in menuList">
         <template v-if="m.show">
           <template v-if="m.routeName === 'logout'">
-            <RouterLink to="/" @click.prevent="logout"><v-btn :class="['menu', isHome ? 'home' : '', 'loginBtn']">{{ m.name }}</v-btn>
+            <RouterLink to="/" @click.prevent="logout"><v-btn :class="['menu', isHome ? 'home' : '', 'loginBtn']">{{
+              m.name }}</v-btn>
             </RouterLink>
           </template>
           <template v-else>
-            <RouterLink :to="{ name: m.routeName }"><v-btn :class="['menu', isHome ? 'home' : '', 'loginBtn']">{{ m.name }}</v-btn>
+            <RouterLink :to="{ name: m.routeName }"><v-btn :class="['menu', isHome ? 'home' : '', 'loginBtn']">{{ m.name
+            }}</v-btn>
             </RouterLink>
           </template>
         </template>

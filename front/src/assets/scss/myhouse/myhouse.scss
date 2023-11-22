@@ -1,0 +1,33 @@
+div {
+  width: 100%;
+  table {
+    width: 30%;
+    tr {
+      border-bottom: 1px solid rgb(230, 230, 230);
+      td {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        > div {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          > span {
+            line-height: 24px;
+            font-weight: 600;
+            > div {
+              height: 40px;
+            }
+          }
+          .address {
+            > span {
+              font-size: 10px;
+            }
+          }
+        }
+      } 
+    }
+    
+  }
+}
