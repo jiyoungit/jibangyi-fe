@@ -1,41 +1,31 @@
 <script setup>
-//////////////////////// 예외처리?
-// document.querySelector("#btn-list").addEventListener("click", function () {
-//   location.href = "${root}/article?action=list";
-// });
-// document.querySelector("#btn-mv-modify").addEventListener("click", function () {
-//   alert("글수정하자!!!");
-//   location.href =
-//     "${root}/article?action=mvmodify&articleno=${article.articleNo}";
-// });
-// document.querySelector("#btn-delete").addEventListener("click", function () {
-//   alert("글삭제하자!!!");
-//   location.href =
-//     "${root}/article?action=delete&articleno=${article.articleNo}";
-// });
-
 import { ref, onMounted } from "vue";
 import { detailArticle, } from "@/api/board.js"
 import { useRouter, useRoute } from "vue-router";
-import { deleteArticle, getAnswer } from "../../api/board";
+import { deleteArticle, getAnswer, registAnswer, modifyAnswer } from "../../api/board";
+import { useMemberStore } from '@/stores/member';
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+const { user, adminCheck } = storeToRefs(memberStore);
 
 const route = useRoute();
 const router = useRouter();
 
 const article = ref({});
 const answer = ref({});
+const answering = ref(false);
 const alert = ref(false);
 
 onMounted(() => {
   detailArticle(route.params.id, ({ data }) => {
     article.value = data;
-    console.log(article.value);
   }, (error) => {
     console.log(error);
   })
   getAnswer(route.params.id, ({ data }) => {
-    answer.value = data;
-    console.log(answer.value);
+    if (data === '') answer.value = { content: '' }
+    else answer.value = data;
   }, (error) => {
     console.log(error);
   })
@@ -48,7 +38,27 @@ const deleteQuestion = () => {
     }, (error) => {
       console.log(error);
     });
+}
 
+const startWriteAnswer = () => {
+  answering.value = true;
+}
+
+const writeAnswer = () => {
+  const param = {
+    content: answer.value.content,
+    qnaNo: article.value.qnaNo,
+    userId: user.value.userId,
+    userName: user.value.userName,
+  }
+
+  registAnswer(param, (res) => {
+    if (res.status === 201) {
+      answering.value = false;
+    }
+  }, (error) => {
+    console.log(error);
+  })
 }
 
 // "articleNo": 500,
@@ -86,23 +96,27 @@ const deleteQuestion = () => {
           <p>답변내용</p>
         </div>
         <div class="answerContent">
-          <p v-if="answer">{{ answer.content }}</p>
+          <p v-if="!!answer.content && !answering">{{ answer.content }}</p>
+          <p v-else-if="answering">
+            <v-textarea v-model="answer.content" variant="underlined"></v-textarea>
+          </p>
           <p v-else class="empty">아직 등록된 답변이 없습니다.</p>
         </div>
       </div>
     </div>
     <div class="btnWrap">
-      <!-- <RouterLink :to="{ name: 'detail', params: { 'id': article.qnaNo } }"></RouterLink> -->
       <RouterLink :to="{ name: 'qna' }"><v-btn rounded="lg">목록</v-btn></RouterLink>
-      <!-- <RouterLink :to="{ name: 'modifyQna' }"><v-btn rounded="lg">수정</v-btn></RouterLink> -->
-
       <v-btn rounded="lg" @click="alert = true">삭제</v-btn>
-
+      <v-btn v-if="adminCheck && !answering" rounded="lg" @click="startWriteAnswer">답변</v-btn>
+      <v-btn v-if="adminCheck && answering" rounded="lg" @click="writeAnswer">등록</v-btn>
     </div>
     <div class="alert">
       <v-expand-transition>
         <v-alert v-show="alert" close-label="what" class="w-25 mx-auto">
-          <div class="alertText mt-2 ml-1">정말 삭제하시겠습니까?</div>
+          <div class="alertText mt-2 ml-1 pr-3 d-flex justify-space-between w-100">정말
+            삭제하시겠습니까?
+            <v-btn icon="mdi-close" size="x-small" variant="plain" density="compact" @click="alert = false"></v-btn>
+          </div>
           <div class="mt-4 mb-2 ml-1">
             <v-btn size="small" rounded="lg" @click="deleteQuestion">확인</v-btn>
             <v-btn class="ml-5" size="small" rounded="lg" @click="alert = false">취소</v-btn>
