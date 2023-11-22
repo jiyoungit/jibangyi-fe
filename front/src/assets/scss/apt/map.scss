@@ -44,3 +44,40 @@ body::-webkit-scrollbar {
     }
   }
 }
+
+.bus {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 66px;
+  height: 75px;
+  background-image: url('@/assets/imgs/marker-bus.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+.metro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background-image: url('@/assets/imgs/marker-metro.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+.hover-message {
+  display: none;
+  position: absolute;
+  top: -30px; /* 메시지를 원하는 위치에 배치합니다. */
+  background-color: #f9f9f9;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
