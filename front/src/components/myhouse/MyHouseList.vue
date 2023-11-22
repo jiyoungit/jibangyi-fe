@@ -11,11 +11,11 @@ const myHouseList = ref([]);
 onMounted(() => {
   listMyHouse({ userId: user.value.userId }, ({ data }) => {
     myHouseList.value = data.userHouseList;
-    console.log(JSON.stringify(myHouseList.value))
+    // console.log(JSON.stringify(myHouseList.value))
   }, (error) => {
     console.log(error);
-  })
-})
+  });
+});
 </script>
 
 <!-- "userId": "ssafy123",

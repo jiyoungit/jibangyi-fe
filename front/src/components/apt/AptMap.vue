@@ -122,7 +122,6 @@ const loadAptMarkers = (data) => {
       try {
         clusterer.addMarkers(overlays);
         clusterer.redraw();
-        console.log(clusterer, overlays);
       } catch (error) {
         console.error('에러!!!!!!!!!!!!!!!!!!!!!!!!!!!', error);
 
