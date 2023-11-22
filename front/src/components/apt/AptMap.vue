@@ -6,8 +6,8 @@ import { storeToRefs } from 'pinia';
 import { findMetroListInRadius } from '@/api/ext/metro';
 
 var map;
-const overlays = ref([]);
-const clusterer = ref();
+var overlays = [];
+var clusterer = {};
 
 const dealStore = useDealStore();
 const { getDongInfo } = storeToRefs(dealStore);
@@ -33,9 +33,34 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
+  window.map = map;
+
+  // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+  const zoomControl = new kakao.maps.ZoomControl();
+  map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+  // 마커 클러스터러를 생성합니다 
+  clusterer = new kakao.maps.MarkerClusterer({
+    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+    minLevel: 5 // 클러스터 할 최소 지도 레벨 
+  });
+
   kakao.maps.event.addListener(map, 'dragend', () => {
     traceCenterCoolds();
   });
+
+  kakao.maps.event.addListener(map, 'zoom_changed', () => {
+    traceCenterCoolds();
+    // 지도의 현재 레벨을 얻어옵니다
+    const level = map.getLevel();
+
+    const message = '현재 지도 레벨은 ' + level + ' 입니다';
+
+    console.log(message);
+  });
+
+  traceCenterCoolds();
 };
 
 const aptClicked = async (aptCode) => {
@@ -44,10 +69,11 @@ const aptClicked = async (aptCode) => {
 };
 
 const deleteOverlays = () => {
-  if (overlays.value.length > 0) {
-    overlays.value.forEach((overlay) => overlay.setMap(null));
+  if (overlays.length > 0) {
+    overlays.forEach((overlay) => overlay.setMap(null));
+    clusterer.clear();
   }
-  overlays.value = [];
+  overlays = [];
 };
 
 watch(
@@ -87,39 +113,28 @@ const loadAptMarkers = (data) => {
       content: content,
     });
 
-    overlays.value.push(customOverlay);
+    overlays.push(customOverlay);
   };
 
   const promises = data.map(setMarker);
   Promise.all(promises)
-    .then(() => { })
+    .then(() => {
+      try {
+        clusterer.addMarkers(overlays);
+        clusterer.redraw();
+        console.log(clusterer, overlays);
+      } catch (error) {
+        console.error('에러!!!!!!!!!!!!!!!!!!!!!!!!!!!', error);
+
+      }
+    })
     .catch((error) => {
       console.error(error);
     });
 
-  // clusterer.value = new kakao.maps.MarkerClusterer({
-  //   map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-  //   averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-  //   minLevel: 10 // 클러스터 할 최소 지도 레벨 
-  // });
-
-  // // 데이터에서 좌표 값을 가지고 커스텀 오버레이를 표시합니다
-  // // 마커 클러스터러로 관리할 커스텀 오버레이 객체는 생성할 때 지도 객체를 설정하지 않습니다
-  // overlays.value = data.map((i, position) => {
-  //   return new kakao.maps.CustomOverlay({
-  //     position: new kakao.maps.LatLng(position.lat, position.lng),
-  //     content: content,
-  //   });
-  // });
-
-  // console.log(overlays.value);
-
-  // // 클러스터러에 커스텀 오버래이들을 추가합니다
-  // clusterer.value.addMarkers(overlays.value);
 };
 
 const loadMetroMarkers = (data) => {
-  console.log(data);
 
   const { result } = data;
   const { station: stations } = result;
@@ -160,7 +175,7 @@ const loadMetroMarkers = (data) => {
     addEventHandle(content, 'mouseenter', () => { console.log('enter:', station.stationName); });
     addEventHandle(content, 'mouseleave', () => { console.log('leave:', station.stationName); });
 
-    overlays.value.push(marker);
+    overlays.push(marker);
 
     // target node에 이벤트 핸들러를 등록하는 함수힙니다  
     function addEventHandle(target, type, callback) {
@@ -172,7 +187,6 @@ const loadMetroMarkers = (data) => {
     }
   };
 
-  console.log(stations);
   const promises = stations.map(setMarker);
   Promise.all(promises)
     .then(() => { })
@@ -196,17 +210,19 @@ const traceCenterCoolds = () => {
     }
   );
 
-  findMetroListInRadius(
-    { y: latlng.getLat(), x: latlng.getLng(), radius: "1500", stationClass: "1:2" },
-    ({ data }) => {
-      loadMetroMarkers(data);
-    },
-    (error) => {
-      console.error(error);
-    });
+  // findMetroListInRadius(
+  //   { y: latlng.getLat(), x: latlng.getLng(), radius: "1500", stationClass: "1:2" },
+  //   ({ data }) => {
+  //     loadMetroMarkers(data);
+  //   },
+  //   (error) => {
+  //     console.error(error);
+  //   });
 }
 
 </script>
+
+
 
 <template>
   <div id="map"></div>
