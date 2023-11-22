@@ -23,10 +23,22 @@ aside {
       background-color: $thirdopacity;
       border-radius: 5px 5px 0 0;
       padding: 1.3rem;
-      > h1 {
-        font-size: 1.1rem;
-        font-weight: 600;
+      > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        > h1 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          padding-top: 1px;
+        }
+        .like {
+          padding-right: 8px;
+          cursor: pointer;
+        }
       }
+      
       .closeBtn {
         color: rgb(122, 122, 122);
         cursor: pointer;

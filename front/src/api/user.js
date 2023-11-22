@@ -30,4 +30,20 @@ async function checkDuplicate(userid, success, fail) {
   await local.post(`/user/checkDuplicate`, { userId: userid }).then(success).catch(fail)
 }
 
-export { userConfirm, findById, tokenRegeneration, logout, join, checkDuplicate }
+function checkMyHouse(param, success, fail) {
+  local.get(`user/myhouse/checkmyhouse`, { params: param }).then(success).catch(fail)
+}
+
+function registMyHouse(param, success, fail) {
+  local.post(`/user/myhouse`, JSON.stringify(param)).then(success).catch(fail);
+}
+
+function deleteMyHouse(param, success, fail) {
+  local.delete(`/user/myhouse/userid/${param.userId}/apt/${param.aptCode}`).then(success).catch(fail);
+}
+
+function listMyHouse(param, success, fail) {
+  local.get(`/user/myhouse`, {params: param}).then(success).catch(fail);
+}
+
+export { userConfirm, findById, tokenRegeneration, logout, join, checkDuplicate, checkMyHouse, registMyHouse, deleteMyHouse, listMyHouse }

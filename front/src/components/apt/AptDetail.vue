@@ -1,16 +1,40 @@
 <script setup>
 import { useDealStore } from '@/stores/deal';
+import { useMemberStore } from '@/stores/member';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
+import { checkMyHouse, registMyHouse, deleteMyHouse } from '@/api/user';
+
+const memberStore = useMemberStore();
+const { user, loginCheck } = storeToRefs(memberStore);
 
 const dealStore = useDealStore();
 const { getAptDealList, oneApt, getTotalPage } = storeToRefs(dealStore);
 
 const currentPage = ref(1);
-watch(currentPage, () => {
-  console.log(getAptDealList);
-  dealStore.aptDetail(currentPage.value);
-})
+const liked = ref();
+const likeInfo = ref({});
+
+onMounted(() => {
+  if (loginCheck.value) {
+    likeInfo.value = {
+      aptCode: oneApt.value.aptCode,
+      userId: user.value.userId,
+    }
+    checkMyHouse(likeInfo.value,
+      ({ data }) => {
+        liked.value = data.isUserHouse;
+      },
+      (error) => {
+        console.log(error);
+      })
+  }
+}),
+
+  watch(currentPage, () => {
+    console.log('apt list' + JSON.stringify(getAptDealList.value));
+    dealStore.aptDetail(currentPage.value);
+  })
 
 watch(oneApt, () => {
   currentPage.value = 1;
@@ -19,13 +43,44 @@ watch(oneApt, () => {
 const closeDealList = () => {
   dealStore.clearAptInfo();
 }
+
+const likeCliked = () => {
+  if (loginCheck.value) {
+    registMyHouse(likeInfo.value, (res) => {
+      if (res.status === 201) {
+        console.log('좋아요!');
+        liked.value = true;
+      }
+    }, (error) => {
+      console.log(error);
+    })
+  }
+}
+
+const unlikeCliked = () => {
+  if (loginCheck.value) {
+    deleteMyHouse(likeInfo.value, (res) => {
+      if (res.status === 204) {
+        console.log('안좋아요!');
+        liked.value = false;
+      }
+    }, (error) => {
+      console.log(error);
+    })
+  }
+}
+
 </script>
 
 <template>
   <aside>
     <div class="aptNameBox">
       <div>
-        <h1>{{ oneApt.aptName }}</h1>
+        <div>
+          <v-icon class="like" v-show="liked" @click="unlikeCliked">mdi-heart</v-icon>
+          <v-icon class="like" v-show="!liked" @click="likeCliked">mdi-heart-outline</v-icon>
+          <h1>{{ oneApt.aptName }}</h1>
+        </div>
         <v-icon class="closeBtn" @click="closeDealList">mdi-close</v-icon>
       </div>
     </div>
