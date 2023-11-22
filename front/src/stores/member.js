@@ -20,6 +20,7 @@ export const useMemberStore = defineStore('memberStore', () => {
   const isAdmin = ref(true);
 
   const user = computed(() => userInfo.value);
+  const loginCheck = computed(() => isLogin.value);
   const adminCheck = computed(() => isAdmin.value);
 
   const userLogin = async (loginUser) => {
@@ -174,6 +175,7 @@ export const useMemberStore = defineStore('memberStore', () => {
     user,
     isAdmin,
     adminCheck,
+    loginCheck,
 
     userLogin,
     getUserInfo,
