@@ -6,7 +6,7 @@ import JoinView from '@/views/JoinView.vue';
 import BoardView from '@/views/BoardView.vue';
 import BoardDetailView from '@/views/BoardDetailView.vue';
 import BoardRegistView from '@/views/BoardRegistView.vue';
-import DealCompareView from '@/views/DealCompareView.vue';
+// import DealCompareView from '@/views/DealCompareView.vue';
 
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
@@ -83,12 +83,12 @@ const router = createRouter({
       component: BoardRegistView,
       beforeEnter: onlyAuthUser,
     },
-    {
-      path: '/compare',
-      name: 'compare',
-      component: DealCompareView,
-      beforeEnter: onlyAuthUser,
-    },
+    // {
+    //   path: '/compare',
+    //   name: 'compare',
+    //   component: DealCompareView,
+    //   beforeEnter: onlyAuthUser,
+    // },
     {
       path: '/login',
       name: 'login',
