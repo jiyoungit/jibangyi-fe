@@ -1,21 +1,29 @@
 package com.ssafy.member.controller;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.member.model.MemberDto;
-import com.ssafy.member.model.MemberParameterDto;
+import com.ssafy.member.model.MemberHouseDto;
+import com.ssafy.member.model.MemberParameter;
+import com.ssafy.member.model.MemberParameter.MyHouseDto;
+import com.ssafy.member.model.service.MemberHouseService;
 import com.ssafy.member.model.service.MemberService;
 import com.ssafy.util.JWTUtil;
 
@@ -29,11 +37,13 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	
 	private MemberService memberService;
+	private MemberHouseService memberHouseService;
 	private JWTUtil jwtUtil;
 
-	public MemberController(MemberService memberService, JWTUtil jwtUtil) {
+	public MemberController(MemberService memberService, MemberHouseService memberHouseService, JWTUtil jwtUtil) {
 		super();
 		this.memberService = memberService;
+		this.memberHouseService = memberHouseService;
 		this.jwtUtil = jwtUtil;
 	}
 
@@ -49,8 +59,8 @@ public class MemberController {
 			if(loginUser != null) {
 				String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
 				String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
-				log.debug("access token : {}", accessToken);
-				log.debug("refresh token : {}", refreshToken);
+//				log.debug("access token : {}", accessToken);
+//				log.debug("refresh token : {}", refreshToken);
 				
 //				발급받은 refresh token을 DB에 저장.
 				memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
@@ -114,7 +124,6 @@ public class MemberController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-
 	}
 
 	@ApiOperation(value = "Access Token 재발급", notes = "만료된 access token을 재발급받는다.", response = Map.class)
@@ -161,7 +170,7 @@ public class MemberController {
 	@ApiOperation(value = "아이디 중복 체크", notes = "해당 아이디가 이미 있는지 확인.")
 	@PostMapping("/checkDuplicate")
 	public ResponseEntity<Map<String, Object>> checkDuplicate(
-			@RequestBody @ApiParam(value = "중복 체크를 할 아이디.", required = true) MemberParameterDto.DupilcatedId dto) {
+			@RequestBody @ApiParam(value = "중복 체크를 할 아이디.", required = true) MemberParameter.DupilcatedIdDto dto) {
 		String userId = dto.getUserId();
 		log.debug("check user : {}", userId);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -172,6 +181,92 @@ public class MemberController {
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			log.debug("아이디 중복 체크 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "아파트 즐겨찾기 등록", notes = "사용자 아이디와 아파트 코드 등록")
+	@PostMapping("/myhouse")
+	public ResponseEntity<Map<String, Object>> saveHouse(
+			@RequestBody @ApiParam(value = "즐겨찾기 등록에 필요한 사용자 아이디, 아파트 코드", required = true) 
+			MyHouseDto myHouseDto) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			memberHouseService.saveUserHouse(myHouseDto);
+			status = HttpStatus.CREATED;
+		} catch (SQLException e) {
+			log.debug("DB 에러 발생 : {}", e);
+			resultMap.put("message", "중복된 데이터 입니다.");
+			status = HttpStatus.CONFLICT;
+		} catch (Exception e) {
+			log.debug("알 수 없는 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "아파트 즐겨찾기 목록", notes = "사용자 아이디로 아파트 즐겨찾기 데이터를 가져온다.")
+	@GetMapping("/myhouse")
+	public ResponseEntity<Map<String, Object>> getHouseList(
+			@RequestParam @ApiParam(value = "사용자 아이디", required = true) String userId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			System.out.println("123");
+			List<MemberHouseDto> list = memberHouseService.getUserHouseList(userId);
+			System.out.println(list);
+			resultMap.put("userHouseList", list);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("알 수 없는 에러 발생 : {}", e);
+			resultMap.put("messagee", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "아파트 즐겨찾기 확인", notes = "등록된 즐겨찾기가 ")
+	@GetMapping("/myhouse/checkmyhouse")
+	public ResponseEntity<Map<String, Object>> checkHouse(
+			@ModelAttribute @ApiParam(value = "사용자 아이디와 아파트 코드", required = true) MyHouseDto myHouseDto) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			boolean isUserHouse = memberHouseService.isUserHouse(myHouseDto);
+			resultMap.put("isUserHouse", isUserHouse);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("알 수 없는 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "아파트 즐겨찾기 삭제", notes = "사용자 아이디로 아파트 코드로 즐겨찾기 삭제")
+	@DeleteMapping("/myhouse/userid/{userid}/apt/{aptcode}")
+	public ResponseEntity<Map<String, Object>> removeHouse(
+			@PathVariable("userid") @ApiParam(value = "사용자 아이디", required = true) String userid,
+		@PathVariable("aptcode") @ApiParam(value = "아파트 코드", required = true) String aptcode) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			MyHouseDto dto = new MyHouseDto();
+			dto.setAptCode(aptcode);
+			dto.setUserId(userid);
+			memberHouseService.deleteUserHouse(dto);
+			status = HttpStatus.NO_CONTENT;
+		} catch (SQLException e) {
+			log.debug("DB 에러 발생 : {}", e);
+			resultMap.put("message", "e");
+			status = HttpStatus.NOT_FOUND;
+		} catch (Exception e) {
+			log.debug("알 수 없는 에러 발생 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

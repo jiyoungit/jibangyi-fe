@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.member.model.mapper.MemberHouseMapper">
+
+	<resultMap type="HouseInfoDetailDto" id="houseInfoDetail">
+		<result property="aptName" column="apartmentName"></result>
+	</resultMap>
+
+	<resultMap type="MemberHouseDto" id="myHouse">
+		<result column="user_id" property="userId"/>
+		<association property="houseInfoDetail" column="aptCode" select="hidetail"></association>
+	</resultMap>
+
+	<select id="hidetail" parameterType="String" resultMap="houseInfoDetail" >
+		select * from houseinfo_detail where aptCode=#{aptCode}
+	</select>
+
+	<insert id="saveUserHouse" parameterType="com.ssafy.member.model.MemberParameter$MyHouseDto">
+		insert into members_house(user_id, aptCode) value (#{userId}, #{aptCode});
+	</insert>
+	
+	<select id="getUserHouseList" parameterType="String" resultMap="myHouse">
+		select * from members_house where user_id=#{userId}
+	</select>
+	
+	<select id="isUserHouse" parameterType="com.ssafy.member.model.MemberParameter$MyHouseDto" resultType="int">
+		select count(*) from members_house where user_id=#{userId} and aptCode=#{aptCode}
+	</select>
+	
+	<delete id="deleteUserHouse" parameterType="com.ssafy.member.model.MemberParameter$MyHouseDto">
+		delete from members_house where user_id=#{userId} and aptCode=#{aptCode}
+	</delete>
+	
+</mapper>
