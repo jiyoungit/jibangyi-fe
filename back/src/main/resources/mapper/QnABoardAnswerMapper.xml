@@ -15,8 +15,8 @@
 	</resultMap>
 	
 	<insert id="writeAnswer" parameterType="qnaBoardAnswerDto">
-		INSERT INTO board_qna_answer (qna_no, user_id, subject, content) 
-		VALUES (#{qnaNo}, #{userId}, #{subject}, #{content});
+		INSERT INTO board_qna_answer (qna_no, user_id, content) 
+		VALUES (#{qnaNo}, #{userId}, #{content});
 	</insert>
 	
 	<select id="getAnswer" parameterType="int" resultMap="answer">
