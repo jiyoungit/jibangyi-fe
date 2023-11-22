@@ -6,10 +6,10 @@ import JoinView from '@/views/JoinView.vue';
 import BoardView from '@/views/BoardView.vue';
 import BoardDetailView from '@/views/BoardDetailView.vue';
 import BoardRegistView from '@/views/BoardRegistView.vue';
-// import DealCompareView from '@/views/DealCompareView.vue';
+import DealCompareView from '@/views/DealCompareView.vue';
 
-import { storeToRefs } from "pinia";
-import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from 'pinia';
+import { useMemberStore } from '@/stores/member';
 import { useMenuStore } from '@/stores/menu';
 
 // 로그인 된 유저만 허용하는 가드
@@ -20,14 +20,14 @@ const onlyAuthUser = async (to, from, next) => {
   const { getUserInfo } = memberStore;
   const { changeMenuState } = menuStore;
 
-  let token = sessionStorage.getItem("accessToken");
+  let token = sessionStorage.getItem('accessToken');
 
   if (userInfo.value != null && token) {
     await getUserInfo(token);
   }
   if (!isValidToken.value || userInfo.value === null) {
     changeMenuState(false);
-    next({ name: "login" });
+    next({ name: 'login' });
   } else {
     changeMenuState(true);
     next();
@@ -42,7 +42,7 @@ const checkUserStatus = async (to, from) => {
   const { getUserInfo } = memberStore;
   const { changeMenuState } = menuStore;
 
-  let token = sessionStorage.getItem("accessToken");
+  let token = sessionStorage.getItem('accessToken');
   if (token) {
     await getUserInfo(token);
   }
@@ -52,7 +52,7 @@ const checkUserStatus = async (to, from) => {
   } else {
     changeMenuState(true);
   }
-}
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,12 +83,12 @@ const router = createRouter({
       component: BoardRegistView,
       beforeEnter: onlyAuthUser,
     },
-    // {
-    //   path: '/compare',
-    //   name: 'compare',
-    //   component: DealCompareView,
-    //   beforeEnter: onlyAuthUser,
-    // },
+    {
+      path: '/compare',
+      name: 'compare',
+      component: DealCompareView,
+      beforeEnter: onlyAuthUser,
+    },
     {
       path: '/login',
       name: 'login',
