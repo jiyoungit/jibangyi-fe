@@ -21,8 +21,7 @@ const onlyAuthUser = async (to, from, next) => {
   const { changeMenuState } = menuStore;
 
   let token = sessionStorage.getItem('accessToken');
-
-  if (userInfo.value != null && token) {
+  if (token) {
     await getUserInfo(token);
   }
   if (!isValidToken.value || userInfo.value === null) {
