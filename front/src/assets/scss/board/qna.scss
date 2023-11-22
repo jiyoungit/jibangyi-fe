@@ -1,4 +1,9 @@
 section {
+  .registBtn {
+    padding-bottom: 10px;
+    text-align: right;
+    width: 100%;
+  }
   > div {
     width: 1020px;
     margin: 0 auto;
@@ -17,12 +22,10 @@ section {
           padding: 20px 5px;
           position: relative;
           td {
-            // margin-bottom: 10px;
             text-align: left;
           }
           .articleSubject {
             width: 100%;
-            // font-size: 1rem;
             color: rgb(34, 34, 34);
           }
           .userName::before {
