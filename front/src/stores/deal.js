@@ -40,8 +40,8 @@ export const useDealStore = defineStore(
       dongInfo.value = dong;
     }
 
-    const aptDetail = (currentPage) => {
-      getAptDealListByAptCode({
+    const aptDetail = async (currentPage) => {
+      await getAptDealListByAptCode({
         aptCode: aptInfo.value.aptCode,
         pageNo: currentPage,
         spp: sizePerPage,
@@ -53,8 +53,8 @@ export const useDealStore = defineStore(
         (err) => { console.log(err); });
     }
 
-    const getAptInfo = (aptCode) => {
-      getAptInfoByAptCode(aptCode, ({ data }) => {
+    const getAptInfo = async (aptCode) => {
+      await getAptInfoByAptCode(aptCode, ({ data }) => {
         aptInfo.value = data;
       })
     }
