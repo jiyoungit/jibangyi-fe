@@ -32,7 +32,7 @@ onMounted(() => {
 }),
 
   watch(currentPage, () => {
-    console.log('apt list' + JSON.stringify(getAptDealList.value));
+    // console.log('apt list' + JSON.stringify(getAptDealList.value));
     dealStore.aptDetail(currentPage.value);
   })
 
