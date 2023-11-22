@@ -14,8 +14,8 @@ function listAptInfos(dongCode, success, fail) {
     .catch(fail)
 }
 
-function getAptInfoByAptCode(aptCode, success, fail) {
-  local.get(`${PREFIX}/apt-deals/info/${aptCode}`).then(success).catch(fail)
+async function getAptInfoByAptCode(aptCode, success, fail) {
+  await local.get(`${PREFIX}/apt-deals/info/${aptCode}`).then(success).catch(fail)
 }
 
 function listAptInfosByCoold(param, success, fail) {

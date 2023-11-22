@@ -38,9 +38,9 @@ const initMap = () => {
   });
 };
 
-const aptClicked = (aptCode) => {
-  dealStore.getAptInfo(aptCode);
-  dealStore.aptDetail(1);
+const aptClicked = async (aptCode) => {
+  await dealStore.getAptInfo(aptCode);
+  await dealStore.aptDetail(1);
 };
 
 const deleteOverlays = () => {
@@ -157,8 +157,8 @@ const loadMetroMarkers = (data) => {
 
     const ele = content.querySelector('.element');
 
-    addEventHandle(content, 'mouseenter', () => {console.log('enter:',station.stationName)});
-    addEventHandle(content, 'mouseleave', () => {console.log('leave:',station.stationName)});
+    addEventHandle(content, 'mouseenter', () => { console.log('enter:', station.stationName); });
+    addEventHandle(content, 'mouseleave', () => { console.log('leave:', station.stationName); });
 
     overlays.value.push(marker);
 
