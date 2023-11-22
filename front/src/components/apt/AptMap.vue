@@ -3,6 +3,7 @@ import { ref, watch, onMounted } from "vue";
 import { listAptInfosByCoold } from "@/api/apt";
 import { useDealStore } from '@/stores/deal';
 import { storeToRefs } from 'pinia';
+import { findMetroListInRadius } from '@/api/ext/metro';
 
 var map;
 const overlays = ref([]);
@@ -32,18 +33,21 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
-  kakao.maps.event.addListener(map, 'dragend', traceCenterCoolds);
+  kakao.maps.event.addListener(map, 'dragend', () => {
+    traceCenterCoolds();
+  });
 };
 
 const aptClicked = (aptCode) => {
   dealStore.getAptInfo(aptCode);
   dealStore.aptDetail(1);
-}
+};
 
 const deleteOverlays = () => {
   if (overlays.value.length > 0) {
     overlays.value.forEach((overlay) => overlay.setMap(null));
   }
+  overlays.value = [];
 };
 
 watch(
@@ -60,12 +64,9 @@ watch(
   { deep: true }
 );
 
-const loadMarkers = (data) => {
-  deleteOverlays();
+const loadAptMarkers = (data) => {
 
-  overlays.value = [];
-  data.forEach((position, index) => {
-
+  const setMarker = (position, index) => {
     const content = document.createElement('div');
     content.innerHTML = // 평수, 시세, 평당가격
       '<div id="overlaybox' + index + '" class="overlaybox">' +
@@ -86,8 +87,15 @@ const loadMarkers = (data) => {
       content: content,
     });
 
-    overlays.value = [...overlays.value, customOverlay];
-  })
+    overlays.value.push(customOverlay);
+  };
+
+  const promises = data.map(setMarker);
+  Promise.all(promises)
+    .then(() => { })
+    .catch((error) => {
+      console.error(error);
+    });
 
   // clusterer.value = new kakao.maps.MarkerClusterer({
   //   map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
@@ -110,18 +118,92 @@ const loadMarkers = (data) => {
   // clusterer.value.addMarkers(overlays.value);
 };
 
-function traceCenterCoolds() {
+const loadMetroMarkers = (data) => {
+  console.log(data);
+
+  const { result } = data;
+  const { station: stations } = result;
+
+  const cntTotal = result.count;
+  let cntMetro = 0;
+  let cntBusStation = 0;
+
+  console.log('주변 교통시설 개수:', cntTotal);
+
+  const setMarker = (station, index) => {
+
+    let className = "";
+    if (station.stationClass == 2) {
+      className = "metro";
+      ++cntMetro;
+    }
+    else if (station.stationClass == 1) {
+      className = "bus";
+      ++cntBusStation;
+      return;
+    }
+
+    // 마커에 표시할 인포윈도우를 생성합니다 
+    const content = document.createElement('div');
+    content.innerHTML =
+      '<div class="' + className + '">' +
+      '  <div class="hover-message">' + station.stationName + '</div>' +
+      '</div>';
+    const marker = new kakao.maps.CustomOverlay({
+      map: map,
+      position: new kakao.maps.LatLng(station.y, station.x),
+      content: content,
+    });
+
+    const ele = content.querySelector('.element');
+
+    addEventHandle(content, 'mouseenter', () => {console.log('enter:',station.stationName)});
+    addEventHandle(content, 'mouseleave', () => {console.log('leave:',station.stationName)});
+
+    overlays.value.push(marker);
+
+    // target node에 이벤트 핸들러를 등록하는 함수힙니다  
+    function addEventHandle(target, type, callback) {
+      if (target.addEventListener) {
+        target.addEventListener(type, callback);
+      } else {
+        target.attachEvent('on' + type, callback);
+      }
+    }
+  };
+
+  console.log(stations);
+  const promises = stations.map(setMarker);
+  Promise.all(promises)
+    .then(() => { })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+const traceCenterCoolds = () => {
+  deleteOverlays();
+
   const latlng = map.getCenter();
 
   listAptInfosByCoold(
-    { lat: latlng.getLat(), lng: latlng.getLng(), range: 3, limit: 500 },
+    { lat: latlng.getLat(), lng: latlng.getLng(), range: 2, limit: 1000 },
     ({ data }) => {
-      loadMarkers(data);
+      loadAptMarkers(data);
     },
     (error) => {
-      console.log(error);
+      console.error(error);
     }
-  )
+  );
+
+  findMetroListInRadius(
+    { y: latlng.getLat(), x: latlng.getLng(), radius: "1500", stationClass: "1:2" },
+    ({ data }) => {
+      loadMetroMarkers(data);
+    },
+    (error) => {
+      console.error(error);
+    });
 }
 
 </script>
