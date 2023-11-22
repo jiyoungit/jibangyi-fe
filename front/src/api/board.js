@@ -28,11 +28,11 @@ function getAnswer(answerNo, success, fail) {
 }
 
 function registAnswer(param, success, fail) {
-  local.post(`/qna/answer/`, {params : param}).then(success).catch(fail);
+  local.post(`/qna/answer/`, JSON.stringify(param)).then(success).catch(fail);
 }
 
 function modifyAnswer(param, success, fail) {
-  local.put(`/qna/answer/`, {params : param}).then(success).catch(fail);
+  local.put(`/qna/answer/`, JSON.stringify(param)).then(success).catch(fail);
 }
 
 function deleteAnswer(answerNo, success, fail) {

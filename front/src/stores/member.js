@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { jwtDecode } from 'jwt-decode';
@@ -16,6 +16,11 @@ export const useMemberStore = defineStore('memberStore', () => {
 
   const isJoinError = ref(false);
   const isDuplicatedId = ref(false);
+
+  const isAdmin = ref(true);
+
+  const user = computed(() => userInfo.value);
+  const adminCheck = computed(() => isAdmin.value);
 
   const userLogin = async (loginUser) => {
     await userConfirm(
@@ -166,6 +171,9 @@ export const useMemberStore = defineStore('memberStore', () => {
     userInfo,
     isValidToken,
     isDuplicatedId,
+    user,
+    isAdmin,
+    adminCheck,
 
     userLogin,
     getUserInfo,

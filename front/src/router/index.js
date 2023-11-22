@@ -5,6 +5,8 @@ import LoginView from '@/views/LoginView.vue';
 import JoinView from '@/views/JoinView.vue';
 import BoardView from '@/views/BoardView.vue';
 import BoardDetailView from '@/views/BoardDetailView.vue';
+import BoardRegistView from '@/views/BoardRegistView.vue';
+import DealCompareView from '@/views/DealCompareView.vue';
 
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
@@ -71,23 +73,21 @@ const router = createRouter({
       component: BoardView,
     },
     {
-      path: '/qna/:id',
+      path: '/qna/detail/:id',
       name: 'detail',
       component: BoardDetailView,
-      // beforeEnter: async (to, from, next) => {
-      //   const id = to.params?.id;
-      //   if (!id) {
-      //     next({name:'/qna'})
-      //   }
-      //   next();
-      // }
-      component: () => import('@/views/BoardDetailView.vue'),
-      props: true,
     },
     {
-      path: '/notice',
-      name: 'notice',
-      component: MainView,
+      path: '/qna/regist',
+      name: 'regist',
+      component: BoardRegistView,
+      beforeEnter: onlyAuthUser,
+    },
+    {
+      path: '/compare',
+      name: 'compare',
+      component: DealCompareView,
+      beforeEnter: onlyAuthUser,
     },
     {
       path: '/login',
