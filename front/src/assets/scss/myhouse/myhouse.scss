@@ -1,10 +1,10 @@
-div {
-  width: 100%;
-  table {
-    width: 30%;
+.listWrap {
+  
+  > table {
+    min-width: 300px;
     tr {
       border-bottom: 1px solid rgb(230, 230, 230);
-      td {
+      > td {
         display: flex;
         flex-direction: column;
         padding: 10px;
@@ -16,18 +16,60 @@ div {
           > span {
             line-height: 24px;
             font-weight: 600;
+            padding: 5px 0;
             > div {
               height: 40px;
             }
           }
-          .address {
-            > span {
-              font-size: 10px;
-            }
+          
+          .checkbox {
+            width: 40px;
+            margin-top: -20px;
+          }
+        }
+        .address {
+          > span {
+            font-size: 0.8rem;
+            color: rgb(133, 133, 133);
           }
         }
       } 
     }
     
+  }
+}
+
+.compareWrap {
+  min-width: 200px;
+  > table {
+    thead {
+      border-bottom: 2px solid rgb(200, 200, 200);
+      th {
+        text-align: center;
+        padding: 10px;
+      }
+      
+    }
+    tbody {
+      td {
+        text-align: center;
+        padding: 20px 10px;
+        font-weight: 500;
+        border-bottom: 1px solid rgb(200, 200, 200);
+        min-width: 200px;
+      }
+      .list {
+        width: 130px;
+        min-width: 0;
+        text-align: left;
+        
+      }
+      .better {
+        color: rgb(0, 86, 13);
+      }
+      .worse {
+        color: rgb(193, 0, 0);
+      }
+    }
   }
 }
