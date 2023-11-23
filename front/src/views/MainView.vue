@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { findDongCode, listAptInfos } from '@/api/apt.js';
 import { useRouter } from 'vue-router';
+import MainChart from '../components/main/MainChart.vue';
+import MainNews from '../components/main/MainNews.vue';
 
 const popularSearchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
 
@@ -18,7 +20,7 @@ const moveToSearchDeal = () => {
   <p></p>
   <div class="searchWrapper">
     <div class="searchInner">
-      <h1 class="searchText">홍박사님을 아세요?</h1>
+      <h1 class="searchText">아파트 정보를 찾으세요!</h1>
       <router-link to="/deal">
         <v-form class="mx-auto mt-8" color="grey-lighten-3" @click="moveToSearchDeal">
           <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
@@ -40,7 +42,7 @@ const moveToSearchDeal = () => {
       <div>
         <a href="#guide2">
           <div class="guideCard__Card">
-            <div class="guideCard__CardTitle">짱짱 간편</div>
+            <div class="guideCard__CardTitle">매우 간편</div>
             <div class="guideCard__CardContext">인기 거래 지역 알아보기</div>
           </div>
         </a>
@@ -48,8 +50,8 @@ const moveToSearchDeal = () => {
       <div>
         <a href="#guide3">
           <div class="guideCard__Card">
-            <div class="guideCard__CardTitle">박박 유용</div>
-            <div class="guideCard__CardContext">관심있는 인기검색어</div>
+            <div class="guideCard__CardTitle">대박 유용</div>
+            <div class="guideCard__CardContext">부동산 관련 뉴스 기사</div>
           </div>
         </a>
       </div>
@@ -57,16 +59,18 @@ const moveToSearchDeal = () => {
   </div>
   <section class="guideFeature" id="guide1">
     <div class="guideFeature__Header">
-      <h2 class="guideFeature__Title">오나전 편리한 서비스</h2>
+      <h2 class="guideFeature__Title">완전 편리한 서비스</h2>
       <v-icon class="arrow">mdi-chevron-down</v-icon>
     </div>
     <div class="guideFeature__Wrapper card">
       <div class="guideFeature__Card">
         <div class="guideFeature__CardTitle">이런 서비스</div>
-        <div class="guideFeature__CardContext">이런 기능도 있답니다?</div>
+        
+        <div class="guideFeature__CardContext"><MainChart></MainChart>이런 기능도 있답니다?</div>
       </div>
       <img class="guideFeature__Img" src="../assets/imgs/fubaoHello.jpg" alt="" />
     </div>
+    
   </section>
   <section class="guideFeature" id="guide2">
     <div class="guideFeature__Header secondaryBg">
@@ -88,9 +92,9 @@ const moveToSearchDeal = () => {
     </div>
     <div class="guideFeature__Wrapper card">
       <div class="guideFeature__Card searchWord">
-        <div class="guideFeature__CardTitle">인기검색어</div>
-        <div class="guideFeature__CardContext" v-for="(word, index) in popularSearchWord" :key="word">{{ index + 1 }}. {{
-          word }}
+        <div class="guideFeature__CardTitle">뉴스</div>
+        <div class="guideFeature__CardContext">
+          <MainNews></MainNews>
         </div>
       </div>
     </div>
