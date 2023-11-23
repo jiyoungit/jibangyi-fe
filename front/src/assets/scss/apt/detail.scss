@@ -31,10 +31,12 @@ aside {
         > h1 {
           font-size: 1.1rem;
           font-weight: 600;
-          padding-top: 1px;
+          padding-top: 1.5px;
+          color: #fff;
         }
         .like {
           padding-right: 8px;
+          margin-right: 3px;
           cursor: pointer;
         }
       }
@@ -53,7 +55,7 @@ aside {
       align-items: stretch;
       width: 100%;
       margin-top: 3rem;
-      padding: 2rem 1.2rem 0.6rem 1.2rem;
+      padding: 2.5rem 1.2rem 0.6rem 1.2rem;
       > div {
         width: 100%;
         > div {
@@ -86,6 +88,7 @@ aside {
         padding: 2px 10px 0.8px;
         line-height: 1.2rem;
         margin-right: 7px;
+        font-size: 0.8rem;
       }
       > p {
         color: rgb(51, 51, 51);
