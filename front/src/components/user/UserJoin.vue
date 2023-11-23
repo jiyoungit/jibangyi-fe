@@ -149,7 +149,8 @@ const join = async () => {
               </div>
             </div>
           </div>
-          <div v-if="inputValidator.validName.failed.value"><span class="text-warn">{{ inputValidator.validName.msg }}</span></div>
+          <div v-if="inputValidator.validName.failed.value"><span class="text-warn">{{ inputValidator.validName.msg
+          }}</span></div>
         </div>
         <div>
           <header>
@@ -172,7 +173,8 @@ const join = async () => {
               </div>
             </div>
           </div>
-          <div v-if="inputValidator.validEmail.failed.value"><span class="text-warn">{{ inputValidator.validEmail.msg }}</span></div>
+          <div v-if="inputValidator.validEmail.failed.value"><span class="text-warn">{{ inputValidator.validEmail.msg
+          }}</span></div>
         </div>
         <button type="button" @click="join">
           <span>회원가입</span>

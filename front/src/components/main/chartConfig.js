@@ -85,5 +85,10 @@ export const options = {
         labelString: 'Value'
       }
     }]
+  },
+  plugins: {
+    legend: {
+      display: false
+    }
   }
 }

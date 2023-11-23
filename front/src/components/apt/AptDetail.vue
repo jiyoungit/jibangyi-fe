@@ -32,7 +32,6 @@ onMounted(() => {
 }),
 
   watch(currentPage, () => {
-    // console.log('apt list' + JSON.stringify(getAptDealList.value));
     dealStore.aptDetail(currentPage.value);
   })
 
@@ -77,8 +76,8 @@ const unlikeCliked = () => {
     <div class="aptNameBox">
       <div>
         <div>
-          <v-icon class="like" v-show="liked" @click="unlikeCliked">mdi-heart</v-icon>
-          <v-icon class="like" v-show="!liked" @click="likeCliked">mdi-heart-outline</v-icon>
+          <v-icon class="like" color="white" v-show="liked" @click="unlikeCliked">mdi-heart</v-icon>
+          <v-icon class="like" color="white" v-show="!liked" @click="likeCliked">mdi-heart-outline</v-icon>
           <h1>{{ oneApt.aptName }}</h1>
         </div>
         <v-icon class="closeBtn" @click="closeDealList">mdi-close</v-icon>

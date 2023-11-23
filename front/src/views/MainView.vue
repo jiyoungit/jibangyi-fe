@@ -1,15 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import { findDongCode, listAptInfos } from '@/api/apt.js';
-import { useRouter } from 'vue-router';
 import MainChart from '../components/main/MainChart.vue';
 import MainNews from '../components/main/MainNews.vue';
 
-const popularSearchWord = ref(['어쩌고', '저쩌고', '어쩔 TV', '우짤래미']);
-
 const searchWord = ref("");
-const dongList = ref([]);
-const router = useRouter();
 
 const moveToSearchDeal = () => {
 
@@ -34,24 +28,24 @@ const moveToSearchDeal = () => {
       <div>
         <a href="#guide1">
           <div class="guideCard__Card">
-            <div class="guideCard__CardTitle">완전 편리</div>
-            <div class="guideCard__CardContext">최근 거래 내역을 한 눈에</div>
+            <div class="guideCard__CardTitle">매매가 비교</div>
+            <div class="guideCard__CardContext">분기별, 아파트별 매매가를<br> 한 눈에 비교 분석</div>
           </div>
         </a>
       </div>
       <div>
         <a href="#guide2">
           <div class="guideCard__Card">
-            <div class="guideCard__CardTitle">매우 간편</div>
-            <div class="guideCard__CardContext">인기 거래 지역 알아보기</div>
+            <div class="guideCard__CardTitle">가장 인기많은 동네</div>
+            <div class="guideCard__CardContext">어디로 이사 갈까?<br>인기 거래 지역 알아보기</div>
           </div>
         </a>
       </div>
       <div>
         <a href="#guide3">
           <div class="guideCard__Card">
-            <div class="guideCard__CardTitle">대박 유용</div>
-            <div class="guideCard__CardContext">부동산 관련 뉴스 기사</div>
+            <div class="guideCard__CardTitle">유용한 소식 제공</div>
+            <div class="guideCard__CardContext">최근 부동산 관련 뉴스<br>보러가기</div>
           </div>
         </a>
       </div>
@@ -59,41 +53,47 @@ const moveToSearchDeal = () => {
   </div>
   <section class="guideFeature" id="guide1">
     <div class="guideFeature__Header">
-      <h2 class="guideFeature__Title">완전 편리한 서비스</h2>
+      <h2 class="guideFeature__Title">분기별 평균 매매가</h2>
       <v-icon class="arrow">mdi-chevron-down</v-icon>
     </div>
-    <div class="guideFeature__Wrapper card">
-      <div class="guideFeature__Card">
-        <div class="guideFeature__CardTitle">이런 서비스</div>
-        
-        <div class="guideFeature__CardContext"><MainChart></MainChart>이런 기능도 있답니다?</div>
+    <div class="guideFeature__Wrapper">
+      <div class="avgDealCard">
+        <MainChart></MainChart>
       </div>
-      <img class="guideFeature__Img" src="../assets/imgs/fubaoHello.jpg" alt="" />
     </div>
-    
+
   </section>
   <section class="guideFeature" id="guide2">
     <div class="guideFeature__Header secondaryBg">
-      <h2 class="guideFeature__Title gray">인기있는 동네, 인기없는 동네</h2>
+      <h2 class="guideFeature__Title gray">인기 많은 동네 TOP 3</h2>
       <v-icon class="arrow gray">mdi-chevron-down</v-icon>
     </div>
     <div class="guideFeature__Wrapper">
       <div class="guideFeature__Card">
-        <div class="guideFeature__CardTitle">행운동</div>
-        <div class="guideFeature__CardContext">행운동이 가장 인기가 많아요.<br />서울대입구로 이사오세요^_^</div>
+        <div class="guideFeature__CardContext">
+          <span>1. 인천광역시 남동구 만수동</span>
+          <img class="guideFeature__Img" src="../assets/imgs/mansudong.png">
+        </div>
+        <div class="guideFeature__CardContext">
+          <img class="guideFeature__Img" src="../assets/imgs/ssangyongdong.png">
+          <span>2. 충청남도 천안시 서북구 쌍용동</span>
+        </div>
+        <div class="guideFeature__CardContext">
+          <span>3. 경기도 수원시 영통구 영통동</span>
+          <img class="guideFeature__Img" src="../assets/imgs/youngtongdong.png" alt="">
+        </div>
       </div>
-      <img class="guideFeature__Img" src="../assets/imgs/populargirl.jpg" alt="" />
     </div>
   </section>
   <section class="guideFeature" id="guide3">
     <div class="guideFeature__Header PrimaryBg">
-      <h2 class="guideFeature__Title white">이런 거 검색해보삼!</h2>
+      <h2 class="guideFeature__Title white">최근 부동산 소식</h2>
       <v-icon class="arrow white">mdi-chevron-down</v-icon>
     </div>
     <div class="guideFeature__Wrapper card">
-      <div class="guideFeature__Card searchWord">
+      <div class="guideFeature__Card">
         <div class="guideFeature__CardTitle">뉴스</div>
-        <div class="guideFeature__CardContext">
+        <div>
           <MainNews></MainNews>
         </div>
       </div>
@@ -141,7 +141,7 @@ const moveToSearchDeal = () => {
   flex-direction: column;
   width: 320px;
   height: 300px;
-  padding: 3.5rem 0 4.35rem 2.5rem;
+  padding: 3.5rem 1.5rem 4.35rem 2.5rem;
   position: relative;
   cursor: pointer;
   background-color: rgb(244, 245, 245);
@@ -150,7 +150,7 @@ const moveToSearchDeal = () => {
 
 .guideCard__CardTitle {
   color: rgb(51, 51, 51);
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 
@@ -162,10 +162,6 @@ const moveToSearchDeal = () => {
 }
 
 .guideFeature {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding-bottom: 12rem;
   background-color: rgb(244, 245, 245);
 }
@@ -177,7 +173,7 @@ const moveToSearchDeal = () => {
 
 .PrimaryBg {
   width: 100%;
-  background-color: #1e7ef9;
+  background-color: #005792;
 }
 
 .secondaryBg {
@@ -200,19 +196,16 @@ const moveToSearchDeal = () => {
 }
 
 .guideFeature__Wrapper {
+  margin: 5.6rem auto;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  margin-top: 5.6rem;
-  width: 60rem;
-}
-
-.card {
-  background: rgb(255, 255, 255);
-  border-radius: 1.6rem;
+  justify-content: center;
 }
 
 .guideFeature__Card {
-  padding: 4.5rem 0 4.35rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .guideFeature__CardTitle {
@@ -224,19 +217,22 @@ const moveToSearchDeal = () => {
 }
 
 .guideFeature__CardContext {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: rgb(102, 102, 102);
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 2.5rem;
-  margin-bottom: 2.4rem;
-  /* letter-spacing: -0.72px; */
+  margin: 2.4rem;
+  width: 100%;
 }
 
 .guideFeature__Img {
   width: 20rem;
-  height: 20rem;
-  margin: 4.5rem;
+  height: auto;
   border-radius: 1.6rem;
+  border: 3px solid rgb(200, 200, 200);
   object-fit: cover;
 }
 
@@ -248,29 +244,13 @@ const moveToSearchDeal = () => {
   color: #fff;
 }
 
-.searchWord {
-  padding-left: 0;
-  flex-direction: column;
-  text-align: center;
-  margin: 0 auto;
-}
-
-.searchWord>div {
-  margin-bottom: 1.5rem;
-}
-
-.infoSection {
-  width: 100%;
-  padding: 40px 0 27px;
-}
-
-.infoSection__Wrapper {
+.avgDealCard {
+  padding: 10rem 4.5rem;
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 1020px;
-  margin: 0 auto;
-}
-
-.infoSection__Card {
-  width: 300px;
+  background: rgb(255, 255, 255);
+  border-radius: 1.6rem;
 }
 </style>

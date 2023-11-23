@@ -7,7 +7,6 @@ import { useMemberStore } from "@/stores/member";
 
 const menuStore = useMenuStore();
 const { menuList } = storeToRefs(menuStore);
-const { changeMenuState } = menuStore;
 
 const memberStore = useMemberStore();
 const { userLogout } = memberStore;
@@ -85,16 +84,11 @@ nav {
   align-items: center;
   height: 80px;
   padding: 0 20px;
-  /* color: #003456; */
 }
 
 .logo {
-  width: 10rem;
+  width: 8rem;
   padding-left: 10px;
-}
-
-tspan {
-  font-weight: 700;
 }
 
 .menuwrap {
@@ -110,7 +104,6 @@ tspan {
   position: relative;
   margin-left: 40px;
   color: #636363;
-  /* mix-blend-mode: difference; */
 }
 
 .home {

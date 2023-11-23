@@ -3,14 +3,12 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
-import { useMenuStore } from "@/stores/menu";
 
 const router = useRouter();
 
 const memberStore = useMemberStore();
 const { isLogin, isLoginError } = storeToRefs(memberStore);
 const { userLogin, getUserInfo } = memberStore;
-const { changeMenuState } = useMenuStore();
 
 const loginUser = ref({
   userId: "",
@@ -45,12 +43,11 @@ const login = async () => {
     }
   }
   if (failed) return;
-  
+
   await userLogin(loginUser.value);
   let token = sessionStorage.getItem("accessToken");
   if (isLogin.value) {
     getUserInfo(token);
-    // changeMenuState(true);
     router.push("/");
   } else {
     alert("로그인 실패");
@@ -62,7 +59,9 @@ const login = async () => {
 <template>
   <section>
     <div>
-      <header><h1>로그인</h1></header>
+      <header>
+        <h1>로그인</h1>
+      </header>
       <form action="">
         <div>
           <header>
@@ -71,7 +70,7 @@ const login = async () => {
           <div class="input">
             <div>
               <div>
-                <input type="text" name="id" id="id" placeholder="아이디 입력" v-model="loginUser.userId"/>
+                <input type="text" name="id" id="id" placeholder="아이디 입력" v-model="loginUser.userId" />
               </div>
             </div>
           </div>
@@ -83,12 +82,14 @@ const login = async () => {
           <div class="input">
             <div>
               <div>
-                <input type="text" name="pw" id="pw" placeholder="비밀번호 입력" v-model="loginUser.userPwd"/>
+                <input type="password" name="pw" id="pw" placeholder="비밀번호 입력" v-model="loginUser.userPwd" />
               </div>
             </div>
           </div>
-          <div v-if="inputValidator.validId.failed.value"><span class="text-warn">{{ inputValidator.validId.msg }}</span></div>
-          <div v-if="inputValidator.validPw.failed.value"><span class="text-warn">{{ inputValidator.validPw.msg }}</span></div>
+          <div v-if="inputValidator.validId.failed.value"><span class="text-warn">{{ inputValidator.validId.msg }}</span>
+          </div>
+          <div v-if="inputValidator.validPw.failed.value"><span class="text-warn">{{ inputValidator.validPw.msg }}</span>
+          </div>
           <div v-if="isLoginError"><span class="text-warn">사용자 정보가 잘못 입력되었습니다.</span></div>
         </div>
         <button type="button" @click="login">
@@ -96,7 +97,6 @@ const login = async () => {
         </button>
       </form>
       <div class="btnWrap">
-        <button>비밀번호 변경</button>
         <button @click="router.push('join')">신규 회원가입</button>
       </div>
     </div>

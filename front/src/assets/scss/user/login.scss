@@ -3,10 +3,11 @@ $primary: #005792;
 section {
   display: flex;
   flex-direction: column;
-  padding: 100px 0px 126px;
+  padding: 100px 0px;
+  min-height: calc(100vh - 192px);
   > div {
     width: 476px;
-    margin: 0 auto;
+    margin: auto;
     border: 1px solid rgb(245, 245, 245);
     padding: 68px;
     > header {
