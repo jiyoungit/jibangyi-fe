@@ -17,9 +17,11 @@
 
 	
 	<select id="searchDetailByAptNo" resultType="HouseInfoDetailDto">
-		SELECT aptCode, recentDealAmount, minDealAmount, maxDealAmount, avgDealAmount, apartmentName aptName, address, buildYear, firstDealDate 
-		FROM whereismyhome.houseinfo_detail
-		WHERE aptCode=#{aptCode};
+		SELECT hid.aptCode, hid.recentDealAmount, hid.minDealAmount, hid.maxDealAmount, hid.avgDealAmount, 
+		hid.apartmentName aptName, hid.address, hid.buildYear, hid.firstDealDate,
+		ROUND(hs.avgArea, 1) avgArea
+		FROM whereismyhome.houseinfo_detail hid, houseinfo_simple hs
+		WHERE hid.aptCode=#{aptCode} and hid.aptCode=hs.aptCode;
 	</select>
 
 	<select id="searchAptInfoByCoold" resultType="HouseInfoSimpleDto">

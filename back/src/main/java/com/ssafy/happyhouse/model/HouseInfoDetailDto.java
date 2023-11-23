@@ -23,4 +23,5 @@ public class HouseInfoDetailDto {
 	private String address;
 	private String buildYear;
 	private String firstDealDate;
+	private String avgArea;
 }
