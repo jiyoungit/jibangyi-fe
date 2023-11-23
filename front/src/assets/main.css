@@ -5,6 +5,11 @@
   font-family: 'Apple SD Gothic' !important;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+
 #app {
   width: 100%;
   font-weight: normal;  
@@ -13,14 +18,10 @@
 a,
 .green {
   text-decoration: none;
-  /* color: hsla(160, 100%, 37%, 1); */
   transition: 0.4s;
 }
 
 @media (hover: hover) {
-  /* a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  } */
 }
 
 @media (min-width: 1024px) {
@@ -28,9 +29,4 @@ a,
     display: flex;
     place-items: center;
   }
-
-  /* #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  } */
 }

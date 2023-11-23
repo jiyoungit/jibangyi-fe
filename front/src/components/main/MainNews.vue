@@ -51,36 +51,47 @@ onMounted(() => {
 </script>
 
 <template>
-
-    <v-table>
-      <thead>
-        <tr>
-          <th>제목</th>
-          <th>작성일자</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="d in data" :key="d.index">
-          <td><a :href="d.link" class="news-title">{{ d.title }}</a></td>
-          <td>{{ d.pubDate }}</td>
-        </tr>
-      </tbody>
-    </v-table>
-
+  <table>
+    <thead>
+    </thead>
+    <tbody>
+      <tr v-for="d in data" :key="d.index">
+        <td><a :href="d.link" class="news-title">{{ d.title }}</a></td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <style scoped>
+table {
+  width: 1020px;
+  background-color: #fff;
+  border-radius: 1.6rem;
+}
 
-th {
-  text-align: center
+tbody {
+  padding: 3rem 10rem;
+  /* padding-left: 10rem; */
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+tr {
+  border-bottom: 1px solid rgb(229, 229, 229);
+}
+
+tr:last-child {
+  border-bottom: none;
 }
 
 td {
-  font-size: 20px;
+  padding: 1rem;
+  text-align: left;
+  width: 100%;
 }
 
-.news-title {
-  color: blue;
+a {
+  font-size: 1rem;
 }
-
 </style>
