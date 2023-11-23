@@ -1,5 +1,6 @@
 .listWrap {
-  
+  max-height: 800px;
+  overflow-y: scroll;
   > table {
     min-width: 300px;
     tr {
@@ -37,6 +38,9 @@
     }
     
   }
+}
+.listWrap::-webkit-scrollbar {
+  display: none;
 }
 
 .compareWrap {
