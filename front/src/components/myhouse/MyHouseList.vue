@@ -1,17 +1,27 @@
 <script setup>
 import { listMyHouse } from '../../api/user';
-import { ref, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useMemberStore } from '@/stores/member';
+import { useCompareStore } from '@/stores/compare'
 import { storeToRefs } from 'pinia';
 
 const memberStore = useMemberStore();
 const { user } = storeToRefs(memberStore);
 const myHouseList = ref([]);
 
+const compareStore = useCompareStore();
+const checkedApt = ref([]);
+
+const check = () => {
+  if (checkedApt.value.length > 2) {
+    checkedApt.value = checkedApt.value.splice(1, 2);
+  }
+  compareStore.getAptInfo(checkedApt.value);
+}
+
 onMounted(() => {
   listMyHouse({ userId: user.value.userId }, ({ data }) => {
     myHouseList.value = data.userHouseList;
-    // console.log(JSON.stringify(myHouseList.value))
   }, (error) => {
     console.log(error);
   });
@@ -32,7 +42,7 @@ onMounted(() => {
 } -->
 
 <template>
-  <div>
+  <div class="listWrap">
     <table>
       <thead></thead>
       <tbody>
@@ -40,7 +50,8 @@ onMounted(() => {
           <td>
             <div>
               <span>{{ house.houseInfoDetail.aptName }}</span>
-              <span><v-checkbox></v-checkbox></span>
+              <span class="checkbox"><v-checkbox v-model="checkedApt" :value="house.houseInfoDetail.aptCode"
+                  @change="check"></v-checkbox></span>
             </div>
             <div class="address">
               <span>{{ house.houseInfoDetail.address }}</span>
