@@ -15,7 +15,6 @@ const recentPriceFlag1 = ref();
 
 const getPrice = (price) => {
   price = price.replace(/,/gi, '');
-  console.log(price);
   return `${(Math.floor(price / 10000)).toLocaleString()}억 ${(price % 10000).toLocaleString()}만원`;
 }
 
@@ -29,7 +28,7 @@ watch(apts, () => {
       buildFlag1.value = 'worse';
     }
 
-    if (apts.value[0].avgDealAmount < apts.value[1].avgDealAmount) {
+    if (+apts.value[0].avgDealAmount < +apts.value[1].avgDealAmount) {
       avgPriceFlag0.value = 'better';
       avgPriceFlag1.value = 'worse';
     } else {
@@ -37,10 +36,10 @@ watch(apts, () => {
       avgPriceFlag1.value = 'better';
     }
 
-    if (apts.value[0].recentDealAmount.replace(/,/, '') < apts.value[1].recentDealAmount.replace(/,/, '')) {
+    if (+apts.value[0].recentDealAmount.replace(/,/, '') < +apts.value[1].recentDealAmount.replace(/,/, '')) {
       recentPriceFlag0.value = 'better';
       recentPriceFlag1.value = 'worse';
-    } {
+    } else {
       recentPriceFlag0.value = 'worse';
       recentPriceFlag1.value = 'better';
     }
