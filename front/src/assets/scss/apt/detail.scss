@@ -1,5 +1,5 @@
-$third: rgb(255, 204, 204);
-$thirdopacity: rgba(255, 204, 204, 0.5);
+$third: rgb(0, 89, 148);
+$thirdopacity: rgba(0, 89, 148, 0.5);
 $sidewidth: 400px;
 
 
@@ -82,8 +82,8 @@ aside {
       > span {
         background-color: $third;
         border-radius: 20px;
-        color: rgb(35, 35, 35);
-        padding: 3px 10px 0.8px;
+        color: rgb(255, 255, 255);
+        padding: 2px 10px 0.8px;
         line-height: 1.2rem;
         margin-right: 7px;
       }
