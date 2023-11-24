@@ -15,7 +15,7 @@ const currentPage = ref(1);
 const liked = ref();
 const likeInfo = ref({});
 
-onMounted(() => {
+const init = () => {
   if (loginCheck.value) {
     likeInfo.value = {
       aptCode: oneApt.value.aptCode,
@@ -29,14 +29,19 @@ onMounted(() => {
         console.log(error);
       })
   }
-}),
+}
 
-  watch(currentPage, () => {
-    dealStore.aptDetail(currentPage.value);
-  })
+onMounted(() => {
+  init();
+})
+
+watch(currentPage, () => {
+  dealStore.aptDetail(currentPage.value);
+})
 
 watch(oneApt, () => {
   currentPage.value = 1;
+  init();
 })
 
 const closeDealList = () => {
