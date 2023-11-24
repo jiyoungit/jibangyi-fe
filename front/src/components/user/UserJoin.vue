@@ -120,7 +120,8 @@ const join = async () => {
           <div class="input">
             <div>
               <div>
-                <input type="text" v-model="joinUser.userPwd" name="pw" id="pw" placeholder="8자리 이상 영문, 숫자, 특수문자 포함" />
+                <input type="password" v-model="joinUser.userPwd" name="pw" id="pw"
+                  placeholder="8자리 이상 영문, 숫자, 특수문자 포함" />
               </div>
             </div>
           </div>
@@ -129,7 +130,7 @@ const join = async () => {
           <div class="input">
             <div>
               <div>
-                <input type="text" v-model="userPwdCheck" name="pwc" id="pwc" placeholder="비밀번호 확인" />
+                <input type="password" v-model="userPwdCheck" name="pwc" id="pwc" placeholder="비밀번호 확인" />
               </div>
             </div>
           </div>
