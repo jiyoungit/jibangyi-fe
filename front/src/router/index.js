@@ -38,7 +38,7 @@ const checkUserStatus = async (to, from) => {
   const memberStore = useMemberStore();
   const menuStore = useMenuStore();
   const { userInfo, isValidToken } = storeToRefs(memberStore);
-  const { getUserInfo } = memberStore;
+  const { getUserInfo, updateUserState } = memberStore;
   const { changeMenuState } = menuStore;
 
   let token = sessionStorage.getItem('accessToken');
@@ -46,11 +46,15 @@ const checkUserStatus = async (to, from) => {
     await getUserInfo(token);
   }
   if (!isValidToken.value || userInfo.value === null) {
+    updateUserState(false);
     changeMenuState(false);
+    // console.log('로그인 체크', false)
     // next({ name: "login" });
   } else {
+    updateUserState(true);
     changeMenuState(true);
   }
+  // console.log('로그인 체크', loginCheck.value)
 };
 
 const router = createRouter({
