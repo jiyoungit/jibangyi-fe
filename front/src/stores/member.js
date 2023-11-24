@@ -42,7 +42,7 @@ export const useMemberStore = defineStore('memberStore', () => {
           isLoginError.value = true;
           isValidToken.value = false;
         }
-      },
+              },
       (error) => {
         
         isLogin.value = false;
@@ -166,6 +166,10 @@ export const useMemberStore = defineStore('memberStore', () => {
       })
   }
 
+  const updateUserState = (flag) => {
+    isLogin.value = flag;
+  }
+
   return {
     isLogin,
     isLoginError,
@@ -183,5 +187,6 @@ export const useMemberStore = defineStore('memberStore', () => {
     userLogout,
     userJoin,
     userIdCheck,
+    updateUserState,
   };
 });
