@@ -11,10 +11,9 @@ const moveToSearchDeal = () => {
 </script>
 
 <template>
-  <p></p>
-  <div class="searchWrapper">
+  <div class="searchWrapper" id="top">
     <div class="searchInner">
-      <h1 class="searchText">아파트 정보를 찾으세요!</h1>
+      <h1 class="searchText">아파트 정보를 찾아보세요!</h1>
       <router-link to="/deal">
         <v-form class="mx-auto mt-8" color="grey-lighten-3" @click="moveToSearchDeal">
           <v-text-field variant="solo" label="동이름을 입력하세요." prepend-inner-icon="mdi-magnify" single-line hide-details
@@ -99,6 +98,11 @@ const moveToSearchDeal = () => {
       </div>
     </div>
   </section>
+  <aside>
+    <a href="#top">
+      <v-icon size="x-large">mdi-chevron-up-circle-outline</v-icon>
+    </a>
+  </aside>
 </template>
 
 <style scoped>
@@ -252,5 +256,15 @@ const moveToSearchDeal = () => {
   width: 1020px;
   background: rgb(255, 255, 255);
   border-radius: 1.6rem;
+}
+
+aside {
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+}
+
+aside>a {
+  color: #6d6d6d;
 }
 </style>
