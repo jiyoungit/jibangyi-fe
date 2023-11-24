@@ -62,7 +62,7 @@ const login = async () => {
       <header>
         <h1>로그인</h1>
       </header>
-      <form action="">
+      <form @submit.prevent="login">
         <div>
           <header>
             <h1>아이디</h1>
@@ -92,7 +92,7 @@ const login = async () => {
           </div>
           <div v-if="isLoginError"><span class="text-warn">사용자 정보가 잘못 입력되었습니다.</span></div>
         </div>
-        <button type="button" @click="login">
+        <button type="submit">
           <span>로그인</span>
         </button>
       </form>
