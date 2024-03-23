@@ -1,37 +1,35 @@
-# s1014_vue_home_kimjimin_parkjiyoung
+# front
 
-# 기능
-## 기본 기능
-1. 아파트 매매내역 조회
-    - [x] 아파트 위치 표시
-    - [x] 아파트 마커 정보 표시
-    - [x] 아파트 마커 클릭시 상세정보
-    - [x] 아파트 위치 클러스터링
+This template should help get you started developing with Vue 3 in Vite.
 
-2. 회원
-    - [x] 회원가입
-    - [x] 로그인
-    - [x] 내 정보 확인
-    - [ ] 내 정보 수정
+## Recommended IDE Setup
 
-3. QnA 게시판
-    - [x] 리스트 - 등록, 상세
-    - [x] 등록
-    - [x] 상세 - 삭제, 답글
-    - [x] 삭제
-    - [x] 답글
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## 추가 기능
-0. 메인 화면
-    - [x] 뉴스 정보 불러오기
-    - [ ] 인기 매매 지역
-    - [ ] 지역별 매매 통계
+## Customize configuration
 
-1. 아파트 매매내역 조회
-    - [x] 아파트 마커 표시 최적화
-    - [ ] 아파트 위치 필터링
-    - [ ] 상권, 환경 정보 표시
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-2. 회원
-    - [x] 관심 동 등록
+## Project Setup
 
+```sh
+npm install
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
+```
+
+### Compile and Minify for Production
+
+```sh
+npm run build
+```
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```
